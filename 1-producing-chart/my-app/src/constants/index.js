@@ -18,6 +18,7 @@ const SIZE = {
     CHART_X: 50,
     CHART_Y: 80,
     LABELS_HEIGHT: 30,
+    OFFSET_VALUE: 10,
   },
 };
 
