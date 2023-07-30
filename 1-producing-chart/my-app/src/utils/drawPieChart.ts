@@ -15,12 +15,22 @@ const drawPieChart = (canvas: CanvasRenderingContext2D, data: ChartDataType) => 
   const drawPie = (startAngle: number, endAngle: number, color: string) => {
     const RADIAN = Math.PI / 180;
     const [PIE_X, PIE_Y] = [SIZE.CANVAS.WIDTH / 2, SIZE.CANVAS.HEIGHT / 2];
+    
+    // 파이 그리기
     canvas.beginPath();
     canvas.moveTo(PIE_X, PIE_Y);
     canvas.arc(PIE_X, PIE_Y, SIZE.PIE_CHART.RADIUS, startAngle * RADIAN, endAngle * RADIAN);
+    canvas.stroke();
+
+    // 차트 내 색상 지표
+    canvas.beginPath();
+    canvas.moveTo(PIE_X, PIE_Y);
+    const deg = startAngle + (endAngle - startAngle) / 2;
+    const rectX = Math.cos(deg * RADIAN) * SIZE.PIE_CHART.RADIUS * 0.7 + PIE_X;
+    const rectY = Math.sin(deg * RADIAN) * SIZE.PIE_CHART.RADIUS * 0.7 + PIE_Y;
+    canvas.rect(rectX, rectY, SIZE.PIE_CHART.COLOR_BOX, SIZE.PIE_CHART.COLOR_BOX);
     canvas.fillStyle = color;
     canvas.fill();
-    canvas.stroke();
   };
 
   const drawLabels = (x: number, y: number, label: string) => {
