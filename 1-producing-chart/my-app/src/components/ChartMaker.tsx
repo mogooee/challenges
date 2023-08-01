@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import Chart from "./Chart";
-import { STUDENTS } from "./constants";
+import { STUDENTS } from "../constants";
 import ScoreBoard from "./ScoreBoard";
 
 const StyledChart = styled.div`

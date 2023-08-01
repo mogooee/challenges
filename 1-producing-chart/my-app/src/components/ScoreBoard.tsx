@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { SCORE } from "./constants";
+import { SCORE } from "../constants";
 import { ChartDataType } from "./ChartMaker";
 
 const ScoreTable = styled.div`

@@ -1,4 +1,4 @@
-import ChartMaker from "./ChartMaker";
+import ChartMaker from "./components/ChartMaker";
 
 function App() {
   return (

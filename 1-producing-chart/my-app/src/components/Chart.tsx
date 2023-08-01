@@ -1,10 +1,10 @@
-import { ChartDataType } from "ChartMaker";
+import { ChartDataType } from "components/ChartMaker";
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import { SIZE } from "./constants";
+import { SIZE } from "../constants";
 import ToggleBtn from "./ToggleBtn";
-import drawBarChart from "./utils/drawBarChart";
-import drawPieChart from "./utils/drawPieChart";
+import drawBarChart from "../utils/drawBarChart";
+import drawPieChart from "../utils/drawPieChart";
 
 const Outline = styled.div`
   border: 1px solid black;

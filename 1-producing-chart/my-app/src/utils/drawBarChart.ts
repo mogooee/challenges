@@ -1,4 +1,4 @@
-import { ChartDataType } from "../ChartMaker";
+import { ChartDataType } from "../components/ChartMaker";
 import { COLORS, SIZE } from "../constants";
 
 const drawBarChart = (canvas: CanvasRenderingContext2D, data: ChartDataType) => {
