@@ -45,8 +45,7 @@ const Chart = ({ data, setChartOpen }: ChartType) => {
     } else if (mode === "BAR") {
       drawBarChart(ctx, data);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [mode]);
+  }, [mode, data]);
 
   return (
     <>
