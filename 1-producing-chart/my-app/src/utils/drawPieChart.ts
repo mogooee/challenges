@@ -5,7 +5,6 @@ const drawPieChart = (canvas: CanvasRenderingContext2D, data: ChartDataType) => 
   const labels: string[] = Object.keys(data);
   const ratios: number[] = Object.values(data);
   const sum = ratios.reduce((acc, cur) => acc + cur, 0);
-  const pieRatio = ratios.map((ratio) => Math.round((ratio / sum) * 360));
 
   const labelWidth = SIZE.CANVAS.WIDTH / labels.length;
   let startAngle = 0;
@@ -15,7 +14,7 @@ const drawPieChart = (canvas: CanvasRenderingContext2D, data: ChartDataType) => 
   const drawPie = (startAngle: number, endAngle: number, color: string) => {
     const RADIAN = Math.PI / 180;
     const [PIE_X, PIE_Y] = [SIZE.CANVAS.WIDTH / 2, SIZE.CANVAS.HEIGHT / 2];
-    
+
     // 파이 그리기
     canvas.beginPath();
     canvas.moveTo(PIE_X, PIE_Y);
@@ -46,7 +45,8 @@ const drawPieChart = (canvas: CanvasRenderingContext2D, data: ChartDataType) => 
     canvas.fillText(label, x, y);
   };
 
-  pieRatio.forEach((currentAngle, i) => {
+  ratios.forEach((ratio, i) => {
+    const currentAngle = Math.round((ratio / sum) * 360);
     const endAngle = startAngle + currentAngle;
     drawPie(startAngle, endAngle, COLORS[i]);
     drawLabels(labelX, labelY, labels[i]);

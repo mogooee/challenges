@@ -6,9 +6,8 @@ const drawBarChart = (canvas: CanvasRenderingContext2D, data: ChartDataType) => 
   const ratios: number[] = Object.values(data);
   const maxY = Math.max(...ratios);
   const n = labels.length;
-
-  let x = SIZE.CANVAS.WIDTH / n / 2 / 2;
   const perWidth = SIZE.CANVAS.WIDTH / n;
+  let x = perWidth / 2 / 2;
 
   const drawXAxis = (x: number, y: number) => {
     canvas.moveTo(0, y);
@@ -22,8 +21,8 @@ const drawBarChart = (canvas: CanvasRenderingContext2D, data: ChartDataType) => 
     canvas.fillText(text, x + stringHalfLen, y);
   };
 
-  const drawBar = (x: number, height: number, color: string) => {
-    canvas.rect(x, SIZE.BAR_CHART.Y_AXIS, SIZE.BAR_CHART.BAR_WIDTH, -height);
+  const drawBar = (x: number, y: number, height: number, color: string) => {
+    canvas.rect(x, y, SIZE.BAR_CHART.BAR_WIDTH, -height);
     canvas.stroke();
     canvas.fillStyle = color;
     canvas.fill();
@@ -35,7 +34,7 @@ const drawBarChart = (canvas: CanvasRenderingContext2D, data: ChartDataType) => 
 
     canvas.beginPath();
     drawXAxis(SIZE.CANVAS.WIDTH, SIZE.BAR_CHART.Y_AXIS);
-    drawBar(x, barHeight, COLORS[i]);
+    drawBar(x, SIZE.BAR_CHART.Y_AXIS, barHeight, COLORS[i]);
     drawText(String(ratio), x, SIZE.BAR_CHART.Y_AXIS - barHeight - SIZE.BAR_CHART.OFFSET_VALUE);
     drawText(labels[i], x, SIZE.CANVAS.HEIGHT - SIZE.BAR_CHART.LABELS_HEIGHT);
 
