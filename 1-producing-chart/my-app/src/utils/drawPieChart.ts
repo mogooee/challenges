@@ -10,10 +10,10 @@ const drawPieChart = (
   const ratios: number[] = Object.values(data);
   const sum = ratios.reduce((acc, cur) => acc + cur, 0);
 
-  const labelWidth = SIZE.CANVAS.WIDTH / labels.length;
   let startAngle = 0;
-  let labelX = SIZE.PIE_CHART.COLOR_BOX,
+  let labelX = 0,
     labelY = SIZE.CANVAS.HEIGHT - SIZE.PIE_CHART.OFFSET_LABEL_Y;
+  const labelWidth = SIZE.CANVAS.WIDTH / labels.length;
 
   const drawPie = (index: number, startAngle: number, endAngle: number, color: string) => {
     let movingAngle = startAngle;
@@ -52,16 +52,33 @@ const drawPieChart = (
   };
 
   const drawLabels = (x: number, y: number, label: string) => {
-    canvas.rect(
-      x - SIZE.PIE_CHART.OFFSET_LABEL_X,
-      y - SIZE.PIE_CHART.OFFSET_LABEL_Y,
-      SIZE.PIE_CHART.COLOR_BOX,
-      SIZE.PIE_CHART.COLOR_BOX
+    // label 외부 사각형
+    canvas.beginPath();
+    canvas.strokeRect(
+      x,
+      y - (SIZE.PIE_CHART.LABELS_HEIGHT - SIZE.PIE_CHART.COLOR_BOX) / 2,
+      labelWidth,
+      SIZE.PIE_CHART.LABELS_HEIGHT
     );
+
+    // label 색상 지표
+    canvas.beginPath();
+    const stringHalfLen =
+      (labelWidth -
+        (SIZE.PIE_CHART.COLOR_BOX + SIZE.PIE_CHART.OFFSET_LABEL_X + Math.round(canvas.measureText(label).width))) /
+      2;
+    canvas.rect(x + stringHalfLen, y, SIZE.PIE_CHART.COLOR_BOX, SIZE.PIE_CHART.COLOR_BOX);
     canvas.fill();
+
+    // label 텍스트
     canvas.font = "14px serif";
     canvas.fillStyle = "black";
-    canvas.fillText(label, x, y);
+    canvas.fillText(
+      label,
+      x + stringHalfLen + SIZE.PIE_CHART.COLOR_BOX + SIZE.PIE_CHART.OFFSET_LABEL_X,
+      y + SIZE.PIE_CHART.COLOR_BOX,
+      labelWidth
+    );
   };
 
   ratios.forEach((ratio, i) => {

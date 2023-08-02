@@ -2,14 +2,15 @@ const STUDENTS = ["Alex", "Tom", "Ryan", "Don", "Emma"];
 
 const SIZE = {
   CANVAS: {
-    WIDTH: 300,
+    WIDTH: 400,
     HEIGHT: 400,
   },
   PIE_CHART: {
     RADIUS: 135,
     COLOR_BOX: 15,
-    OFFSET_LABEL_X: 17,
-    OFFSET_LABEL_Y: 15,
+    OFFSET_LABEL_X: 5,
+    OFFSET_LABEL_Y: 30,
+    LABELS_HEIGHT: 25,
   },
   BAR_CHART: {
     BAR_WIDTH: 25,

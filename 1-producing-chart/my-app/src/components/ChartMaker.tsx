@@ -37,7 +37,7 @@ const Head = styled(Box)`
 `;
 
 const Body = styled(Box)`
-  width: 300px;
+  width: 400px;
   height: 450px;
   padding: 35px 20px;
   font-size: 15px;
