@@ -1,5 +1,5 @@
 import { ChartDataType } from "../components/ChartMaker";
-import { COLORS, SIZE } from "../constants";
+import { ANIMATION, COLORS, SIZE } from "../constants";
 
 const drawBarChart = (canvas: CanvasRenderingContext2D, data: ChartDataType) => {
   const labels: string[] = Object.keys(data);
@@ -12,6 +12,7 @@ const drawBarChart = (canvas: CanvasRenderingContext2D, data: ChartDataType) => 
   const drawXAxis = (x: number, y: number) => {
     canvas.moveTo(0, y);
     canvas.lineTo(x, y);
+    canvas.stroke();
   };
 
   const drawText = (text: string, x: number, y: number) => {
@@ -22,10 +23,25 @@ const drawBarChart = (canvas: CanvasRenderingContext2D, data: ChartDataType) => 
   };
 
   const drawBar = (x: number, y: number, height: number, color: string) => {
-    canvas.rect(x, y, SIZE.BAR_CHART.BAR_WIDTH, -height);
-    canvas.stroke();
-    canvas.fillStyle = color;
-    canvas.fill();
+    let movingHeight = 0,
+      animationId = 0;
+
+    const animation = () => {
+      canvas.beginPath();
+      canvas.rect(x, y, SIZE.BAR_CHART.BAR_WIDTH, -movingHeight);
+      canvas.fillStyle = color;
+      canvas.fill();
+
+      if (movingHeight === height) {
+        cancelAnimationFrame(animationId);
+        return;
+      }
+
+      movingHeight = movingHeight < height ? movingHeight + ANIMATION.BAR_CHART_MOVING_HEIGHT : height;
+      animationId = requestAnimationFrame(animation);
+    };
+
+    animation();
   };
 
   ratios.forEach((ratio, i) => {

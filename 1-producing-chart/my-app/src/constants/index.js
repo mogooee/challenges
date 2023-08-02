@@ -29,4 +29,8 @@ const SCORE = {
   MAX: 9999,
 };
 
-export { STUDENTS, SCORE, SIZE, COLORS };
+const ANIMATION = {
+  BAR_CHART_MOVING_HEIGHT: 5,
+};
+
+export { STUDENTS, SCORE, SIZE, COLORS, ANIMATION };
