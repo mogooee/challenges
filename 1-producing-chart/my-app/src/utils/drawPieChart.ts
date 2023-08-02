@@ -1,5 +1,5 @@
 import { ChartDataType } from "../components/ChartMaker";
-import { COLORS, SIZE } from "../constants/index";
+import { ANIMATION, COLORS, SIZE } from "../constants/index";
 
 const drawPieChart = (canvas: CanvasRenderingContext2D, data: ChartDataType) => {
   const labels: string[] = Object.keys(data);
@@ -12,14 +12,28 @@ const drawPieChart = (canvas: CanvasRenderingContext2D, data: ChartDataType) => 
     labelY = SIZE.CANVAS.HEIGHT - SIZE.PIE_CHART.OFFSET_LABEL_Y;
 
   const drawPie = (startAngle: number, endAngle: number, color: string) => {
+    let movingAngle = startAngle,
+      animationId = 0;
+
     const RADIAN = Math.PI / 180;
     const [PIE_X, PIE_Y] = [SIZE.CANVAS.WIDTH / 2, SIZE.CANVAS.HEIGHT / 2];
 
-    // 파이 그리기
-    canvas.beginPath();
-    canvas.moveTo(PIE_X, PIE_Y);
-    canvas.arc(PIE_X, PIE_Y, SIZE.PIE_CHART.RADIUS, startAngle * RADIAN, endAngle * RADIAN);
-    canvas.stroke();
+    const animation = () => {
+      canvas.beginPath();
+      canvas.moveTo(PIE_X, PIE_Y);
+      canvas.arc(PIE_X, PIE_Y, SIZE.PIE_CHART.RADIUS, startAngle * RADIAN, movingAngle * RADIAN);
+      canvas.stroke();
+
+      if (movingAngle === endAngle) {
+        cancelAnimationFrame(animationId);
+        return;
+      }
+
+      movingAngle = movingAngle < endAngle ? movingAngle + ANIMATION.PIE_CHART_MOVING_ANGLE : endAngle;
+      animationId = requestAnimationFrame(animation);
+    };
+
+    animation();
 
     // 차트 내 색상 지표
     canvas.beginPath();
@@ -30,6 +44,8 @@ const drawPieChart = (canvas: CanvasRenderingContext2D, data: ChartDataType) => 
     canvas.rect(rectX, rectY, SIZE.PIE_CHART.COLOR_BOX, SIZE.PIE_CHART.COLOR_BOX);
     canvas.fillStyle = color;
     canvas.fill();
+
+    canvas.closePath();
   };
 
   const drawLabels = (x: number, y: number, label: string) => {
