@@ -3,13 +3,9 @@ import { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { SIZE } from "../constants";
 import ToggleBtn from "./ToggleBtn";
-import drawBarChart from "../utils/drawBarChart";
-import drawPieChart from "../utils/drawPieChart";
-
-const Outline = styled.div`
-  border: 1px solid black;
-  border-radius: 8px;
-`;
+import drawBarChart from "utils/drawBarChart";
+import drawPieChart from "utils/drawPieChart";
+import drawOutline from "utils/drawOutline";
 
 const ControlBox = styled.div`
   display: flex;
@@ -44,6 +40,7 @@ const Chart = ({ data, setChartOpen }: ChartType) => {
       cancelAnimationFrame(id);
     });
     ctx.clearRect(0, 0, SIZE.CANVAS.WIDTH, SIZE.CANVAS.HEIGHT);
+    drawOutline(ctx);
     if (mode === "PIE") {
       drawPieChart(ctx, data, animationId);
     } else if (mode === "BAR") {
@@ -57,9 +54,7 @@ const Chart = ({ data, setChartOpen }: ChartType) => {
         <button onClick={() => setChartOpen(false)}>back</button>
         <ToggleBtn mode={mode} onClick={toggleMode}></ToggleBtn>
       </ControlBox>
-      <Outline>
-        <canvas id="chart" width={SIZE.CANVAS.WIDTH} height={SIZE.CANVAS.HEIGHT}></canvas>
-      </Outline>
+      <canvas id="chart" width={SIZE.CANVAS.WIDTH} height={SIZE.CANVAS.HEIGHT}></canvas>
     </>
   );
 };
