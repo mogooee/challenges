@@ -9,8 +9,9 @@ const SIZE = {
     RADIUS: 135,
     COLOR_BOX: 15,
     OFFSET_LABEL_X: 5,
-    OFFSET_LABEL_Y: 30,
-    LABELS_HEIGHT: 25,
+    OFFSET_LABEL_Y: 40,
+    OFFSET_VALUE: 4,
+    LABELS_HEIGHT: 40,
   },
   BAR_CHART: {
     BAR_WIDTH: 25,

@@ -51,7 +51,7 @@ const drawPieChart = (
     canvas.closePath();
   };
 
-  const drawLabels = (x: number, y: number, label: string) => {
+  const drawLabels = (x: number, y: number, label: string, value: number) => {
     // label 외부 사각형
     canvas.beginPath();
     canvas.strokeRect(
@@ -67,7 +67,12 @@ const drawPieChart = (
       (labelWidth -
         (SIZE.PIE_CHART.COLOR_BOX + SIZE.PIE_CHART.OFFSET_LABEL_X + Math.round(canvas.measureText(label).width))) /
       2;
-    canvas.rect(x + stringHalfLen, y, SIZE.PIE_CHART.COLOR_BOX, SIZE.PIE_CHART.COLOR_BOX);
+    canvas.rect(
+      x + stringHalfLen,
+      y - SIZE.PIE_CHART.COLOR_BOX / 2,
+      SIZE.PIE_CHART.COLOR_BOX,
+      SIZE.PIE_CHART.COLOR_BOX
+    );
     canvas.fill();
 
     // label 텍스트
@@ -76,7 +81,15 @@ const drawPieChart = (
     canvas.fillText(
       label,
       x + stringHalfLen + SIZE.PIE_CHART.COLOR_BOX + SIZE.PIE_CHART.OFFSET_LABEL_X,
-      y + SIZE.PIE_CHART.COLOR_BOX,
+      y + SIZE.PIE_CHART.COLOR_BOX / 2,
+      labelWidth
+    );
+
+    // 파이 수치
+    canvas.fillText(
+      String(value),
+      x + stringHalfLen + SIZE.PIE_CHART.COLOR_BOX + SIZE.PIE_CHART.OFFSET_LABEL_X,
+      y + SIZE.PIE_CHART.LABELS_HEIGHT / 2 + SIZE.PIE_CHART.OFFSET_VALUE,
       labelWidth
     );
   };
@@ -85,7 +98,7 @@ const drawPieChart = (
     const currentAngle = Math.round((ratio / sum) * 360);
     const endAngle = startAngle + currentAngle;
     drawPie(i, startAngle, endAngle, COLORS[i]);
-    drawLabels(labelX, labelY, labels[i]);
+    drawLabels(labelX, labelY, labels[i], ratio);
     startAngle += currentAngle;
     labelX += labelWidth;
   });
