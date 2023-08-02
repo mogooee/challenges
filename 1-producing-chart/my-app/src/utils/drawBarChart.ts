@@ -1,7 +1,11 @@
 import { ChartDataType } from "../components/ChartMaker";
 import { ANIMATION, COLORS, SIZE } from "../constants";
 
-const drawBarChart = (canvas: CanvasRenderingContext2D, data: ChartDataType) => {
+const drawBarChart = (
+  canvas: CanvasRenderingContext2D,
+  data: ChartDataType,
+  animationId: React.MutableRefObject<number[]>
+) => {
   const labels: string[] = Object.keys(data);
   const ratios: number[] = Object.values(data);
   const maxY = Math.max(...ratios);
@@ -22,9 +26,8 @@ const drawBarChart = (canvas: CanvasRenderingContext2D, data: ChartDataType) => 
     canvas.fillText(text, x + stringHalfLen, y);
   };
 
-  const drawBar = (x: number, y: number, height: number, color: string) => {
-    let movingHeight = 0,
-      animationId = 0;
+  const drawBar = (index: number, x: number, y: number, height: number, color: string) => {
+    let movingHeight = 0;
 
     const animation = () => {
       canvas.beginPath();
@@ -33,12 +36,12 @@ const drawBarChart = (canvas: CanvasRenderingContext2D, data: ChartDataType) => 
       canvas.fill();
 
       if (movingHeight === height) {
-        cancelAnimationFrame(animationId);
+        cancelAnimationFrame(animationId[index]);
         return;
       }
 
       movingHeight = movingHeight < height ? movingHeight + ANIMATION.BAR_CHART_MOVING_HEIGHT : height;
-      animationId = requestAnimationFrame(animation);
+      animationId.current[index] = requestAnimationFrame(animation);
     };
 
     animation();
@@ -50,7 +53,7 @@ const drawBarChart = (canvas: CanvasRenderingContext2D, data: ChartDataType) => 
 
     canvas.beginPath();
     drawXAxis(SIZE.CANVAS.WIDTH, SIZE.BAR_CHART.Y_AXIS);
-    drawBar(x, SIZE.BAR_CHART.Y_AXIS, barHeight, COLORS[i]);
+    drawBar(i, x, SIZE.BAR_CHART.Y_AXIS, barHeight, COLORS[i]);
     drawText(String(ratio), x, SIZE.BAR_CHART.Y_AXIS - barHeight - SIZE.BAR_CHART.OFFSET_VALUE);
     drawText(labels[i], x, SIZE.CANVAS.HEIGHT - SIZE.BAR_CHART.LABELS_HEIGHT);
 

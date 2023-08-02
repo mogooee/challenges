@@ -1,5 +1,5 @@
 import { ChartDataType } from "components/ChartMaker";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { SIZE } from "../constants";
 import ToggleBtn from "./ToggleBtn";
@@ -27,6 +27,7 @@ interface ChartType {
 
 const Chart = ({ data, setChartOpen }: ChartType) => {
   const [mode, setMode] = useState<ChartModeType>("PIE");
+  const animationId = useRef([0]);
 
   const toggleMode = () => {
     setMode((prevMode) => {
@@ -39,11 +40,14 @@ const Chart = ({ data, setChartOpen }: ChartType) => {
     const canvas = document.getElementById("chart");
     const ctx = (canvas as HTMLCanvasElement).getContext("2d");
     if (!(ctx instanceof CanvasRenderingContext2D)) return;
+    animationId.current.forEach((id) => {
+      cancelAnimationFrame(id);
+    });
     ctx.clearRect(0, 0, SIZE.CANVAS.WIDTH, SIZE.CANVAS.HEIGHT);
     if (mode === "PIE") {
-      drawPieChart(ctx, data);
+      drawPieChart(ctx, data, animationId);
     } else if (mode === "BAR") {
-      drawBarChart(ctx, data);
+      drawBarChart(ctx, data, animationId);
     }
   }, [mode, data]);
 
