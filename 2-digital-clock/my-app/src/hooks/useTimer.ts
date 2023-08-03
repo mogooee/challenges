@@ -33,9 +33,9 @@ const useTimer = () => {
   };
 
   const timerRadio: RadioData[] = [
-    { title: 'start', checked: false, onClick: startTimer },
-    { title: 'paused', checked: true, onClick: pauseTimer },
-    { title: 'reset', checked: false, onClick: resetTimer },
+    { title: 'start', onClick: startTimer },
+    { title: 'paused', onClick: pauseTimer },
+    { title: 'reset', onClick: resetTimer },
   ];
 
   const minute1 = getTens(timer / TIMER.PER_MINUTE_SEC);

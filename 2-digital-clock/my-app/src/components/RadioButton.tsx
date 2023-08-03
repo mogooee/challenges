@@ -35,7 +35,7 @@ const StyledRadioBtn = styled.div`
 
 export interface RadioData {
   title: string;
-  checked: boolean;
+  checked?: boolean;
   onClick: (event: React.MouseEvent<HTMLLabelElement>) => void;
 }
 
