@@ -18,6 +18,11 @@ const useClock = () => {
     sec: new Date().getSeconds(),
   });
 
+  const startClock = () => {
+    const date = new Date();
+    setClock({ hour: date.getHours(), minute: date.getMinutes(), sec: date.getSeconds() });
+  };
+
   const switch12HourMode = () => {
     setMode('12-HOUR');
   };
@@ -38,11 +43,6 @@ const useClock = () => {
       onClick: switch24HourMode,
     },
   ];
-
-  const startClock = () => {
-    const date = new Date();
-    setClock({ hour: date.getHours(), minute: date.getMinutes(), sec: date.getSeconds() });
-  };
 
   const meridiem = clock.hour < 12 ? 'AM' : 'PM';
   const hour1 = getTens(mode === '12-HOUR' && clock.hour > 12 ? clock.hour - 12 : clock.hour);
