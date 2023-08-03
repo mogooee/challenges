@@ -27,6 +27,13 @@ export const onColSeg = css`
   }
 `;
 
+export const offColSeg = css`
+  div {
+    border-left-color: #eee;
+    border-right-color: #eee;
+  }
+`;
+
 const ColumnSegment = ({ index }: { index: number }) => {
   return (
     <StyledColSeg className={`segment-${index}`}>

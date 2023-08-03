@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import ColumnSegment, { onColSeg } from './ColSegment';
-import RowSegment, { OnRowSeg } from './RowSegment';
+import ColumnSegment, { onColSeg, offColSeg } from './ColSegment';
+import RowSegment, { onRowSeg, offRowSeg } from './RowSegment';
 
 const StyledSevenSegment = styled.div<SevenSegmentProps>`
   width: 55px;
@@ -43,43 +43,50 @@ const StyledSevenSegment = styled.div<SevenSegmentProps>`
 
   .segment-1 {
     ${({ $number }) => {
-      if ($number !== 1 && $number !== 4) return OnRowSeg;
+      if ($number !== 1 && $number !== 4) return onRowSeg;
+      return offRowSeg;
     }}
   }
 
   .segment-2 {
     ${({ $number }) => {
       if ($number !== 1 && $number !== 2 && $number !== 3 && $number !== 7) return onColSeg;
+      return offColSeg;
     }}
   }
 
   .segment-3 {
     ${({ $number }) => {
       if ($number !== 5 && $number !== 6) return onColSeg;
+      return offColSeg;
     }}
   }
 
   .segment-4 {
     ${({ $number }) => {
-      if ($number !== 0 && $number !== 1 && $number !== 7) return OnRowSeg;
+      if ($number !== 0 && $number !== 1 && $number !== 7) return onRowSeg;
+      return offRowSeg;
     }}
   }
 
   .segment-5 {
     ${({ $number }) => {
       if ($number === 0 || $number === 2 || $number === 6 || $number === 8) return onColSeg;
+      return offColSeg;
     }}
   }
 
   .segment-6 {
     ${({ $number }) => {
       if ($number !== 2) return onColSeg;
+      return offColSeg;
     }}
   }
 
   .segment-7 {
     ${({ $number }) => {
-      if ($number !== 1 && $number !== 4 && $number !== 7 && $number !== 9) return OnRowSeg;
+      if ($number !== 1 && $number !== 4 && $number !== 7 && $number !== 9) return onRowSeg;
+      return offRowSeg;
     }}
   }
 `;

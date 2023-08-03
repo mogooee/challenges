@@ -19,10 +19,17 @@ const RowSegBottom = styled(RowSeg)`
   border-top: 5px solid #eee;
 `;
 
-export const OnRowSeg = css`
+export const onRowSeg = css`
   div {
     border-top-color: mediumseagreen;
     border-bottom-color: mediumseagreen;
+  }
+`;
+
+export const offRowSeg = css`
+  div {
+    border-top-color: #eee;
+    border-bottom-color: #eee;
   }
 `;
 
