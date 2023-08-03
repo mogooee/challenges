@@ -12,11 +12,11 @@ const RowSeg = styled.div`
 `;
 
 const RowSegTop = styled(RowSeg)`
-  border-bottom: 5px solid lightgray;
+  border-bottom: 5px solid #eee;
 `;
 
 const RowSegBottom = styled(RowSeg)`
-  border-top: 5px solid lightgray;
+  border-top: 5px solid #eee;
 `;
 
 export const OnRowSeg = css`

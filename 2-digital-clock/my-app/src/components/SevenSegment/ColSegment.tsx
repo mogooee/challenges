@@ -13,11 +13,11 @@ const ColSeg = styled.div`
 `;
 
 const ColSegLeft = styled(ColSeg)`
-  border-right: 5px solid lightgray;
+  border-right: 5px solid #eee;
 `;
 
 const ColSegRight = styled(ColSeg)`
-  border-left: 5px solid lightgray;
+  border-left: 5px solid #eee;
 `;
 
 export const onColSeg = css`
