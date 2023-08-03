@@ -61,6 +61,7 @@ const DigitalClock = () => {
   const [mode, setMode] = useState<'CLOCK' | 'TIMER'>('CLOCK');
 
   const { mode: clockMode, time: clockTime, flicker: clockFlicker, clockRadio, startClock } = useClock();
+  const { time: timerTime, timerRadio } = useTimer();
 
   const toggleMode = () => {
     setMode((prev) => (prev === 'CLOCK' ? 'TIMER' : 'CLOCK'));
@@ -71,22 +72,10 @@ const DigitalClock = () => {
     return () => clearInterval(clockId);
   }, [startClock]);
 
-  const timerRadio: RadioData[] = [
-    { title: 'start', checked: false, onClick: () => {} },
-    { title: 'paused', checked: true, onClick: () => {} },
-    { title: 'reset', checked: false, onClick: () => {} },
-  ];
-
-  const clockRadio: RadioData[] = [
-    { title: '12', checked: false, onClick: () => {} },
-    { title: '24', checked: true, onClick: () => {} },
-  ];
-
-
-  const hour1 = clockTime.hour1;
-  const hour2 = clockTime.hour2;
-  const minute1 = clockTime.minute1;
-  const minute2 = clockTime.minute2;
+  const hour1 = mode === 'CLOCK' ? clockTime.hour1 : timerTime.minute1;
+  const hour2 = mode === 'CLOCK' ? clockTime.hour2 : timerTime.minute2;
+  const minute1 = mode === 'CLOCK' ? clockTime.minute1 : timerTime.sec1;
+  const minute2 = mode === 'CLOCK' ? clockTime.minute2 : timerTime.sec2;
   const flicker = clockFlicker;
 
   return (
