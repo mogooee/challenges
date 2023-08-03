@@ -37,18 +37,21 @@ const ControlBox = styled.div`
   align-items: center;
 `;
 
-const Flicker = styled.div`
+const Flicker = styled.div<{ $flicker: number }>`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   height: inherit;
+
+  div {
+    background-color: ${({ $flicker }) => ($flicker ? 'white' : 'mediumseagreen')};
+  }
 `;
 
-const Dot = styled.div<{ $sec: number }>`
+const Dot = styled.div`
   width: 10px;
   height: 10px;
   border: 1px solid lightgray;
-  background-color: ${({ $sec }) => ($sec ? 'white' : 'mediumseagreen')};
 `;
 
 const Meridiem = styled.div`
@@ -84,9 +87,9 @@ const DigitalClock = () => {
       <Monitor>
         <SevenSegment $number={hour1}></SevenSegment>
         <SevenSegment $number={hour2}></SevenSegment>
-        <Flicker>
-          <Dot $sec={flicker}></Dot>
-          <Dot $sec={flicker}></Dot>
+        <Flicker $flicker={flicker}>
+          <Dot></Dot>
+          <Dot></Dot>
         </Flicker>
         <SevenSegment $number={minute1}></SevenSegment>
         <SevenSegment $number={minute2}></SevenSegment>
