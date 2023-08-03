@@ -18,6 +18,11 @@ const useTimer = () => {
     }, 1000);
   };
 
+  const pauseTimer = () => {
+    if (!timerId.current) return;
+    clearInterval(timerId.current);
+    timerId.current = null;
+  };
 
   const resetTimer = () => {
     if (!timer) return;
@@ -30,7 +35,7 @@ const useTimer = () => {
 
   const timerRadio: RadioData[] = [
     { title: 'start', checked: false, onClick: startTimer },
-    { title: 'paused', checked: true, onClick: () => {} },
+    { title: 'paused', checked: true, onClick: pauseTimer },
     { title: 'reset', checked: false, onClick: resetTimer },
   ];
 
