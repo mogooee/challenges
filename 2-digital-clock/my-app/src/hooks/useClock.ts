@@ -18,24 +18,24 @@ const useClock = () => {
     sec: new Date().getSeconds(),
   });
 
-  const clickRadioButtonHandler = () => {
-    if (mode === '12-HOUR') {
-      setMode('24-HOUR');
-      return;
-    }
+  const switch12HourMode = () => {
     setMode('12-HOUR');
+  };
+
+  const switch24HourMode = () => {
+    setMode('24-HOUR');
   };
 
   const clockRadio: RadioData[] = [
     {
       title: '12',
       checked: true,
-      onClick: clickRadioButtonHandler,
+      onClick: switch24HourMode,
     },
     {
       title: '24',
       checked: false,
-      onClick: clickRadioButtonHandler,
+      onClick: switch12HourMode,
     },
   ];
 
