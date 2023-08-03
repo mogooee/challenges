@@ -51,7 +51,11 @@ const Dot = styled.div`
 
 
 const DigitalClock = () => {
-  const toggleMode = () => {};
+  const [mode, setMode] = useState<'CLOCK' | 'TIMER'>('CLOCK');
+
+  const toggleMode = () => {
+    setMode((prev) => (prev === 'CLOCK' ? 'TIMER' : 'CLOCK'));
+  };
 
   const timerRadio: RadioData[] = [
     { title: 'start', checked: false, onClick: () => {} },
