@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import RadioButton from './RadioButton';
-import SevenSegment from './SevenSegment';
 import ToggleBtn from './ToggleButton';
+import SevenSegment from './SevenSegment/index';
 import useTimer from '../hooks/useTimer';
 import useClock from '../hooks/useClock';
 
