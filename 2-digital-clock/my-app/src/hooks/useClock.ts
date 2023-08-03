@@ -51,7 +51,7 @@ const useClock = () => {
   const minute2 = getUnits(clock.minute);
   const flicker = clock.sec % 2;
 
-  return { time: { hour1, hour2, minute1, minute2 }, flicker, clockRadio, startClock };
+  return { mode, time: { hour1, hour2, minute1, minute2, meridiem }, flicker, clockRadio, startClock };
 };
 
 export default useClock;

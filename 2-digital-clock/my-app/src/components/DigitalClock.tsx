@@ -50,16 +50,17 @@ const Dot = styled.div<{ $sec: number }>`
   background-color: ${({ $sec }) => ($sec ? 'white' : 'mediumseagreen')};
 `;
 
+const Meridiem = styled.div`
+  position: absolute;
+  right: 16px;
+  bottom: 0;
+  font-size: 1.5em;
+`;
 
 const DigitalClock = () => {
   const [mode, setMode] = useState<'CLOCK' | 'TIMER'>('CLOCK');
 
-  const {
-    time: clockTime,
-    flicker: clockFlicker,
-    clockRadio,
-    startClock,
-  } = useClock();
+  const { mode: clockMode, time: clockTime, flicker: clockFlicker, clockRadio, startClock } = useClock();
 
   const toggleMode = () => {
     setMode((prev) => (prev === 'CLOCK' ? 'TIMER' : 'CLOCK'));
@@ -99,6 +100,7 @@ const DigitalClock = () => {
         </Flicker>
         <SevenSegment $number={minute1}></SevenSegment>
         <SevenSegment $number={minute2}></SevenSegment>
+        {mode === 'CLOCK' && clockMode === '12-HOUR' && <Meridiem className="meridiem">{clockTime.meridiem}</Meridiem>}
       </Monitor>
       <ControlBox>
         <ToggleBtn onMode="Clock" offMode="Timer" onClick={toggleMode} />
