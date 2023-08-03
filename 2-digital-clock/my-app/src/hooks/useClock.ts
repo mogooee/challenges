@@ -37,8 +37,9 @@ const useClock = () => {
   const hour2 = getUnits(clock.hour);
   const minute1 = getTens(clock.minute);
   const minute2 = getUnits(clock.minute);
+  const flicker = clock.sec % 2;
 
-  return { time: { hour1, hour2, minute1, minute2 }, clockRadio, startClock };
+  return { time: { hour1, hour2, minute1, minute2 }, flicker, clockRadio, startClock };
 };
 
 export default useClock;

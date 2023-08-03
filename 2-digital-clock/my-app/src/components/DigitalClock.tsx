@@ -43,11 +43,11 @@ const Flicker = styled.div`
   height: inherit;
 `;
 
-const Dot = styled.div`
+const Dot = styled.div<{ $sec: number }>`
   width: 10px;
   height: 10px;
   border: 1px solid lightgray;
-  background-color: 'mediumseagreen';
+  background-color: ${({ $sec }) => ($sec ? 'white' : 'mediumseagreen')};
 `;
 
 
@@ -56,6 +56,7 @@ const DigitalClock = () => {
 
   const {
     time: clockTime,
+    flicker: clockFlicker,
     clockRadio,
     startClock,
   } = useClock();
@@ -85,6 +86,7 @@ const DigitalClock = () => {
   const hour2 = clockTime.hour2;
   const minute1 = clockTime.minute1;
   const minute2 = clockTime.minute2;
+  const flicker = clockFlicker;
 
   return (
     <StyledDigitalClock>
@@ -92,8 +94,8 @@ const DigitalClock = () => {
         <SevenSegment $number={hour1}></SevenSegment>
         <SevenSegment $number={hour2}></SevenSegment>
         <Flicker>
-          <Dot></Dot>
-          <Dot></Dot>
+          <Dot $sec={flicker}></Dot>
+          <Dot $sec={flicker}></Dot>
         </Flicker>
         <SevenSegment $number={minute1}></SevenSegment>
         <SevenSegment $number={minute2}></SevenSegment>
