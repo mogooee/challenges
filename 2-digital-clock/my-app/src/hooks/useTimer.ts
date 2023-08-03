@@ -25,7 +25,6 @@ const useTimer = () => {
   };
 
   const resetTimer = () => {
-    if (!timer) return;
     if (timerId.current) {
       clearInterval(timerId.current);
     }
