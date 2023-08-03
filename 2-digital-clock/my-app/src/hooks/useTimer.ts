@@ -10,7 +10,11 @@ const useTimer = () => {
   const startTimer = () => {
     if (timerId.current) return;
     timerId.current = setInterval(() => {
+      if (timer > TIMER.MAX_MINUTE * TIMER.PER_MINUTE_SEC + TIMER.MAX_SEC) {
+        setTimer(TIMER.INIT);
+      } else {
         setTimer((prev) => (prev += TIMER.SEC));
+      }
     }, 1000);
   };
 
