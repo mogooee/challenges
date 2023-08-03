@@ -30,12 +30,12 @@ const useClock = () => {
     {
       title: '12',
       checked: true,
-      onClick: switch24HourMode,
+      onClick: switch12HourMode,
     },
     {
       title: '24',
       checked: false,
-      onClick: switch12HourMode,
+      onClick: switch24HourMode,
     },
   ];
 
