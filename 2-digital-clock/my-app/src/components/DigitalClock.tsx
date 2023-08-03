@@ -60,11 +60,11 @@ const Meridiem = styled.div`
 
 const DigitalClock = () => {
   const [mode, setMode] = useState<'CLOCK' | 'TIMER'>('CLOCK');
-
   const { mode: clockMode, time: clockTime, flicker: clockFlicker, clockRadio, startClock } = useClock();
-  const { time: timerTime, flicker: timerFlicker, timerRadio } = useTimer();
+  const { time: timerTime, flicker: timerFlicker, timerRadio, resetTimer } = useTimer();
 
   const toggleMode = () => {
+    if (mode === 'TIMER') resetTimer();
     setMode((prev) => (prev === 'CLOCK' ? 'TIMER' : 'CLOCK'));
   };
 
