@@ -29,8 +29,9 @@ const useTimer = () => {
   const minute2 = getUnits(timer / TIMER.PER_MINUTE_SEC);
   const sec1 = getTens(timer % TIMER.PER_MINUTE_SEC);
   const sec2 = getUnits(timer % TIMER.PER_MINUTE_SEC);
+  const flicker = sec2 % 2;
 
-  return { time: { minute1, minute2, sec1, sec2 }, timerRadio };
+  return { time: { minute1, minute2, sec1, sec2 }, flicker, timerRadio };
 };
 
 export default useTimer;

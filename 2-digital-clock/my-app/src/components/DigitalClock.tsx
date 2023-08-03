@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import RadioButton, { RadioData } from './RadioButton';
+import RadioButton from './RadioButton';
 import SevenSegment from './SevenSegment';
 import ToggleBtn from './ToggleButton';
+import useTimer from '../hooks/useTimer';
 import useClock from '../hooks/useClock';
 
 const StyledDigitalClock = styled.div`
@@ -61,7 +62,7 @@ const DigitalClock = () => {
   const [mode, setMode] = useState<'CLOCK' | 'TIMER'>('CLOCK');
 
   const { mode: clockMode, time: clockTime, flicker: clockFlicker, clockRadio, startClock } = useClock();
-  const { time: timerTime, timerRadio } = useTimer();
+  const { time: timerTime, flicker: timerFlicker, timerRadio } = useTimer();
 
   const toggleMode = () => {
     setMode((prev) => (prev === 'CLOCK' ? 'TIMER' : 'CLOCK'));
@@ -76,7 +77,7 @@ const DigitalClock = () => {
   const hour2 = mode === 'CLOCK' ? clockTime.hour2 : timerTime.minute2;
   const minute1 = mode === 'CLOCK' ? clockTime.minute1 : timerTime.sec1;
   const minute2 = mode === 'CLOCK' ? clockTime.minute2 : timerTime.sec2;
-  const flicker = clockFlicker;
+  const flicker = mode === 'CLOCK' ? clockFlicker : timerFlicker;
 
   return (
     <StyledDigitalClock>
