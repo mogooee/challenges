@@ -12,6 +12,7 @@ class Rating {
   init = () => {
     this.render();
     this.createStar(this.number);
+    this.setEvents();
   };
 
   render = () => {
@@ -32,6 +33,14 @@ class Rating {
     }
   };
 
+  setEvents = () => {
+    this.setMouseLeaveEvent();
+  };
+
+  setMouseLeaveEvent = () => {
+    const stars = $('.stars');
+    stars?.addEventListener('mouseleave', () => this.updateStars(this.rating));
+  };
 
   setRating = (newValue) => {
     this.rating = newValue;
