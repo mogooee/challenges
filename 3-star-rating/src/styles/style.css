@@ -36,6 +36,12 @@ main {
   font-size: 1.7rem;
 }
 
+.stars {
+  display: flex;
+  gap: 1rem;
+  margin: 3rem 0;
+}
+
 .star {
   width: var(--star-width);
   height: var(--star-height);
