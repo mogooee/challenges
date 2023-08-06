@@ -51,11 +51,18 @@ export class Star {
   };
 
   mouseMoveStar = (event) => {
-    const star = $('.star');
-        if (event.offsetX < event.currentTarget.offsetWidth / 2) {
+    const stars = $$('.star');
+    for (let i = 0; i < stars.length; i += 1) {
+      if (i <= this.index) {
+        if (i === this.index && event.offsetX < event.currentTarget.offsetWidth / 2) {
           this.highlightHalfStar(stars[i]);
+          continue;
         }
         this.highlightStar(stars[i]);
+      } else {
+        this.noHighlightStar(stars[i]);
+      }
+    }
   };
 
   setRating = () => {
