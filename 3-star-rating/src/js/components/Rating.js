@@ -45,7 +45,13 @@ class Rating {
   setRating = (newValue) => {
     this.rating = newValue;
     this.updateStars(newValue);
-      this.stars.push(new Star(index, RATING.INIT.value));
+    this.renderRatingMsg(newValue);
+  };
+
+  renderRatingMsg = (rating) => {
+    const ratingMsg = $('.rating-msg');
+    if (!ratingMsg) return;
+    ratingMsg.textContent = MSG.RATING[Math.ceil(rating)];
   };
 
   calcStarValue = (rating, index) => {
