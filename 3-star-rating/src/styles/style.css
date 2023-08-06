@@ -29,7 +29,7 @@ main {
   cursor: pointer;
 }
 
-.half ::before {
+.half::before {
  content: '';
  display: block; 
  width: calc(var(--star-width) / 2);
