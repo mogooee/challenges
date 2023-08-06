@@ -1,9 +1,11 @@
+import { RATING } from '../constants/index.js';
 import { $, $$ } from '../utils/index.js';
 
 export class Star {
-  constructor(index, value) {
+  constructor(index, value, setValue) {
     this.index = index;
     this.value = value;
+    this.setValue = setValue;
     this.init();
     this.setEvents();
   }
@@ -58,15 +60,27 @@ export class Star {
 
   setRating = () => {
     if (this.target?.classList.contains(RATING.HALF.class)) {
-      this.value = RATING.HALF.value;
-      this.highlightHalfStar(this.target);
+      this.setValue(this.index + RATING.HALF.value);
       return;
     }
 
     if (this.target?.classList.contains(RATING.ON.class)) {
-      this.value = RATING.ON.value;
-      this.highlightStar(this.target);
+      this.setValue(this.index + RATING.ON.value);
     }
   };
+
+  updateState = (value) => {
+    if (value === RATING.ON.value) {
+      this.highlightStar(this.target);
+      return;
+    }
+    if (value === RATING.HALF.value) {
+      this.highlightHalfStar(this.target);
+      return;
+    }
+
+    this.noHighlightStar(this.target);
+  };
+}
 
 export default Star;
