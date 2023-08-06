@@ -21,6 +21,21 @@ main {
   background-color: var(--main-bg-color);
 }
 
+.rating {
+  width: min-content;
+  display: grid; 
+  place-items: center;
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 1rem 0.5rem 0.5rem lightblue;
+  padding: 3rem;
+}
+
+.rating > h1 {
+  text-align: center;
+  font-size: 1.7rem;
+}
+
 .star {
   width: var(--star-width);
   height: var(--star-height);
@@ -41,3 +56,7 @@ main {
   background-color: var(--star-on-color);
 }
 
+.rating-msg {
+  text-align: center;
+  font-size: 1rem;
+}

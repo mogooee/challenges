@@ -1,7 +1,8 @@
 import { $, $$ } from '../utils/index.js';
 
 export class Star {
-  constructor(value) {
+  constructor(index, value) {
+    this.index = index;
     this.value = value;
     this.init();
     this.setEvents();
@@ -12,14 +13,14 @@ export class Star {
   };
 
   render = () => {
-    const rating = $('.star');
+    const rating = $('.stars');
     rating?.insertAdjacentHTML('beforeend', this.createHTML());
   };
 
   createHTML = () => {
     const state =
       this.value === RATING.INIT.value ? RATING.INIT.class : RATING.HALF.value ? RATING.HALF.class : RATING.ON.class;
-    return `<button class='star ${state}'></button>`;
+    return `<button id='star-${this.index}' class='star ${state}'></button>`;
   };
 
   setEvents = () => {
@@ -29,7 +30,7 @@ export class Star {
   };
 
   setTarget = () => {
-    const star = $('.star');
+    const star = $(`#star-${this.index}`);
     this.target = star;
   };
 

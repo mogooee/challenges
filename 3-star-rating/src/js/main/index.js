@@ -1,19 +1,21 @@
-import Star from '../components/Star.js';
+import Rating from '../components/Rating.js';
+import { TOTAL_RATING_NUM } from '../constants/index.js';
 
-const createStar = () => {
-  new Star();
+const createRating = () => {
+  const rating = new Rating(TOTAL_RATING_NUM);
+  rating.init();
 };
 
-const createStarHTML = () => '<div class="star"></div>';
+const createRatingHTML = () => '<div class="rating"></div>';
 
 const render = (parent) => {
   const main = parent;
-  main.innerHTML = createStarHTML();
+  main.innerHTML = createRatingHTML();
 };
 
 const mainInit = (parent) => {
   render(parent);
-  createStar();
+  createRating();
 };
 
 export default mainInit;
