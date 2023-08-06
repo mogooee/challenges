@@ -25,6 +25,7 @@ export class Star {
   setEvents = () => {
     this.setTarget();
     this.target?.addEventListener('mousemove', this.mouseMoveStar);
+    this.target?.addEventListener('click', this.setRating);
   };
 
   setTarget = () => {
@@ -50,9 +51,21 @@ export class Star {
     const star = $('.star');
         if (event.offsetX < event.currentTarget.offsetWidth / 2) {
           this.highlightHalfStar(stars[i]);
-        } else {
-          this.highlightStar(stars[i]);
         }
+        this.highlightStar(stars[i]);
+  };
+
+  setRating = () => {
+    if (this.target?.classList.contains(RATING.HALF.class)) {
+      this.value = RATING.HALF.value;
+      this.highlightHalfStar(this.target);
+      return;
+    }
+
+    if (this.target?.classList.contains(RATING.ON.class)) {
+      this.value = RATING.ON.value;
+      this.highlightStar(this.target);
+    }
   };
 
 export default Star;
