@@ -29,7 +29,9 @@ class Rating {
 
   createStar = (number) => {
     for (let index = 0; index < number; index += 1) {
-      this.stars.push(new Star(index, RATING.INIT.value, this.setRating));
+      const star = new Star(index, RATING.INIT.value, this.setRating);
+      star.init();
+      this.stars.push(star);
     }
   };
 

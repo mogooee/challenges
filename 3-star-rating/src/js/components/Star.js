@@ -6,12 +6,11 @@ export class Star {
     this.index = index;
     this.value = value;
     this.setValue = setValue;
-    this.init();
-    this.setEvents();
   }
 
   init = () => {
     this.render();
+    this.setEvents();
   };
 
   render = () => {
