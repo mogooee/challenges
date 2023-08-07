@@ -26,7 +26,7 @@ export class Star {
 
   setEvents = () => {
     this.setTarget();
-    this.target?.addEventListener('mousemove', this.mouseMoveStar);
+    this.target?.addEventListener('mousemove', this.colorStar);
     this.target?.addEventListener('click', this.setRating);
   };
 
@@ -49,7 +49,7 @@ export class Star {
     starElement.classList.remove('half');
   };
 
-  mouseMoveStar = (event) => {
+  colorStar = (event) => {
     const stars = $$('.star');
     for (let i = 0; i < stars.length; i += 1) {
       if (i <= this.index) {
