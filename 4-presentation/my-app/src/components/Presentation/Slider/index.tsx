@@ -46,6 +46,13 @@ const ImageContainer = styled.div<TImageContainer>`
   display: grid;
   place-items: center;
   gap: 10px;
+  cursor: pointer;
+
+  &:hover {
+    img {
+      opacity: 0.5;
+    }
+  }
 
   img {
     ${({ $isHighlight, $highlight }) =>

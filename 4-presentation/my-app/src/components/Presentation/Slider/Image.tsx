@@ -12,22 +12,12 @@ type TStyledImage = Pick<ImageProps, 'type'>;
 
 const StyledImage = styled.img<TStyledImage>`
   border-radius: 10px;
-  cursor: pointer;
   object-fit: contain;
 
   ${({ type }) => {
     if (type === 'ROOT')
       return css`
         width: inherit;
-      `;
-  }};
-
-  ${({ type }) => {
-    if (type === 'ITEM')
-      return css`
-        &:hover {
-          opacity: 0.5;
-        }
       `;
   }};
 `;
