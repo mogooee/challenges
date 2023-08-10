@@ -1,13 +1,6 @@
 import { useState } from 'react';
-import styled from 'styled-components';
-import {
-  INIT,
-  SIZE,
-  SLIDE_NEXT,
-  SLIDE_PREV,
-  PREV_BTN,
-  NEXT_BTN,
-} from '../../../constants';
+import styled, { css } from 'styled-components';
+import { INIT, SIZE, PREV_BTN, NEXT_BTN } from '../../../constants';
 import Image from './Image';
 
 interface SliderProps {
@@ -17,7 +10,7 @@ interface SliderProps {
   $gap?: number;
 }
 
-type SlideImage = typeof SLIDE_PREV | typeof SLIDE_NEXT;
+type SlideImage = 'PREV' | 'NEXT';
 
 type TImageList = Pick<SliderProps, '$gap'> & { $position: number };
 
@@ -25,19 +18,22 @@ type TStyledSlider = Pick<SliderProps, '$showNum' | '$gap'> & {
   $itemWidth: number;
 };
 
+type TImageContainer = { $isHighlight: boolean };
+
 const StyledSlider = styled.div<TStyledSlider>`
   display: grid;
   gap: ${({ $gap }) => $gap}px;
   width: ${({ $showNum, $gap, $itemWidth }) => {
     const itemsWidth = $itemWidth * ($showNum || 0);
     const gapsWidth = ($gap || 0) * (($showNum || 0) - 1);
-    return itemsWidth + gapsWidth;
+    return itemsWidth + gapsWidth + 10;
   }}px;
   overflow: hidden;
 `;
 
 const ImageList = styled.div<TImageList>`
   display: flex;
+  align-items: center;
   gap: ${({ $gap }) => $gap}px;
   transition: all 0.3s ease-out;
   transform: translateX(${({ $position }) => $position}px);
@@ -47,10 +43,19 @@ const ImageList = styled.div<TImageList>`
   }
 `;
 
-const ImageContainer = styled.div`
+const ImageContainer = styled.div<TImageContainer>`
   display: grid;
   place-items: center;
   gap: 10px;
+
+  img {
+    ${({ $isHighlight }) => {
+      if ($isHighlight)
+        return css`
+          border: 5px solid cornflowerblue;
+        `;
+    }}
+  }
 `;
 
 const Controller = styled.div`
@@ -115,12 +120,11 @@ const Slider = ({
       <Image
         type="ROOT"
         file={files[idx]}
-        width={SIZE.ROOT_IMAGE.WIDTH}
         height={`${SIZE.ROOT_IMAGE.HEIGHT}px`}
       />
       <ImageList $position={position} $gap={$gap}>
         {Object.values(files).map((file, fileIdx) => (
-          <ImageContainer key={file.name}>
+          <ImageContainer key={file.name} $isHighlight={idx === fileIdx}>
             <Image
               type="ITEM"
               file={file}
@@ -134,7 +138,7 @@ const Slider = ({
       <Controller>
         <button
           type="button"
-          onClick={() => slideImage('prev')}
+          onClick={() => slideImage('PREV')}
           disabled={idx === INIT.INDEX}
         >
           {PREV_BTN}
@@ -142,7 +146,7 @@ const Slider = ({
         <span id="page-number">{`${idxToOrder(idx)} / ${files.length}`}</span>
         <button
           type="button"
-          onClick={() => slideImage(SLIDE_NEXT)}
+          onClick={() => slideImage('NEXT')}
           disabled={idx === files.length - 1}
         >
           {NEXT_BTN}

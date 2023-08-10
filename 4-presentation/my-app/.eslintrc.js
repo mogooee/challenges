@@ -27,6 +27,7 @@ module.exports = {
   },
   plugins: ['@typescript-eslint'],
   rules: {
+    'consistent-return': 'off',
     'prettier/prettier': ['error'],
     'react/require-default-props': 'off',
     'react/react-in-jsx-scope': 'off',

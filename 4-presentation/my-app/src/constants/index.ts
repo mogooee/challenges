@@ -5,9 +5,6 @@ export const TITLE = {
 
 export const [PREV_BTN, NEXT_BTN] = ['<', '>'];
 
-export const [IMG_ROOT, IMG_ITEM] = ['ROOT', 'ITEM'];
-export const [SLIDE_PREV, SLIDE_NEXT] = ['PREV', 'NEXT'];
-
 export const INIT = {
   INDEX: 0,
   POSITION: 0,

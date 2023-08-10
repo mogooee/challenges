@@ -1,7 +1,6 @@
-import styled from 'styled-components';
-import { IMG_ROOT, IMG_ITEM } from '../../../constants';
+import styled, { css } from 'styled-components';
 
-type ImageType = typeof IMG_ROOT | typeof IMG_ITEM;
+type ImageType = 'ROOT' | 'ITEM';
 interface ImageProps {
   type: ImageType;
   file: File;
@@ -9,24 +8,31 @@ interface ImageProps {
   height?: string;
 }
 
-type SImage = Pick<ImageProps, 'type'>;
+type TStyledImage = Pick<ImageProps, 'type'>;
 
-const StyledImage = styled.img<SImage>`
+const StyledImage = styled.img<TStyledImage>`
   border-radius: 10px;
-  aspect-ratio: 5/3;
   cursor: pointer;
+  object-fit: contain;
 
-  &:hover {
-    opacity: ${({ type }) => (type === 'IMG_ITEM' ? 0.5 : 1)};
-  }
+  ${({ type }) => {
+    if (type === 'ROOT')
+      return css`
+        width: inherit;
+      `;
+  }};
+
+  ${({ type }) => {
+    if (type === 'ITEM')
+      return css`
+        &:hover {
+          opacity: 0.5;
+        }
+      `;
+  }};
 `;
 
-const Image = ({
-  type = 'IMG_ITEM',
-  file,
-  width = 'auto',
-  height = 'auto',
-}: ImageProps) => (
+const Image = ({ type = 'ROOT', file, width, height }: ImageProps) => (
   <StyledImage
     type={type}
     src={URL.createObjectURL(file)}
