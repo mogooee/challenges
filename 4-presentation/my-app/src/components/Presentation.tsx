@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+import FileAdder from './FileAdder';
+import { TITLE } from '../constants/index';
+
 const StyledPresentation = styled.div`
   width: 50%;
   aspect-ratio: 16/10;
@@ -9,28 +12,22 @@ const StyledPresentation = styled.div`
   align-content: space-evenly;
   gap: 30px;
   padding: 30px;
-
-  button {
-    border: 1px solid black;
-    border-radius: 10px;
-    padding: 20px;
-    cursor: pointer;
-    background-color: black;
-    color: white;
-    &:hover {
-      background-color: white;
-      color: black;
-    }
-  }
 `;
 
-
 const Presentation = () => {
+  const [files, setFiles] = useState<FileList>();
+
+  const addFile = ({ target }: { target: HTMLInputElement }) => {
+    if (!target.files) return;
+    setFiles(target.files);
+  };
+
   return (
     <StyledPresentation>
-      <h1>4th challenge - Presentation</h1>
-      <button type="button">사진 추가</button>
+      <h1>{TITLE.PRESENTIATION}</h1>
+      <FileAdder addFile={addFile} />
     </StyledPresentation>
   );
+};
 
 export default Presentation;
