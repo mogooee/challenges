@@ -8,25 +8,30 @@ interface SliderProps {
   passNum?: number;
   $showNum?: number;
   $gap?: number;
+  $highlight?: number;
 }
 
 type SlideImage = 'PREV' | 'NEXT';
 
 type TImageList = Pick<SliderProps, '$gap'> & { $position: number };
 
-type TStyledSlider = Pick<SliderProps, '$showNum' | '$gap'> & {
+type TStyledSlider = Pick<SliderProps, '$showNum' | '$gap' | '$highlight'> & {
   $itemWidth: number;
 };
 
-type TImageContainer = { $isHighlight: boolean };
+type TImageContainer = Pick<SliderProps, '$highlight'> & {
+  $isHighlight: boolean;
+};
 
 const StyledSlider = styled.div<TStyledSlider>`
   display: grid;
   gap: ${({ $gap }) => $gap}px;
-  width: ${({ $showNum, $gap, $itemWidth }) => {
-    const itemsWidth = $itemWidth * ($showNum || 0);
-    const gapsWidth = ($gap || 0) * (($showNum || 0) - 1);
-    return itemsWidth + gapsWidth + 10;
+  width: ${({ $showNum, $gap, $itemWidth, $highlight }) => {
+    if (!$showNum || !$gap || !$itemWidth || !$highlight) return;
+    const itemsWidth = $itemWidth * $showNum;
+    const gapsWidth = $gap * ($showNum - 1);
+    const borderWidth = $highlight * 2 * $showNum;
+    return itemsWidth + gapsWidth + borderWidth;
   }}px;
   overflow: hidden;
 `;
@@ -49,12 +54,10 @@ const ImageContainer = styled.div<TImageContainer>`
   gap: 10px;
 
   img {
-    ${({ $isHighlight }) => {
-      if ($isHighlight)
-        return css`
-          border: 5px solid cornflowerblue;
-        `;
-    }}
+    ${({ $isHighlight, $highlight }) =>
+      `border: ${$highlight}px solid ${
+        $isHighlight ? 'cornflowerblue' : 'transparent'
+      }`};
   }
 `;
 
@@ -79,6 +82,7 @@ const Slider = ({
   passNum = 1,
   $showNum = 3,
   $gap = 20,
+  $highlight = 5,
 }: SliderProps) => {
   const [idx, setIdx] = useState<number>(INIT.INDEX);
   const [slideIdx, setSlideIdx] = useState<number>(INIT.INDEX);
@@ -99,7 +103,8 @@ const Slider = ({
     });
 
     setPosition((prevPosition) => {
-      const movingPosition = (SIZE.ITEM_IMAGE.WIDTH + $gap) * passNum;
+      const movingPosition =
+        (SIZE.ITEM_IMAGE.WIDTH + $gap + $highlight * 2) * passNum;
 
       if (type === 'PREV' && slideIdx === INIT.INDEX) {
         return prevPosition + movingPosition;
@@ -116,6 +121,7 @@ const Slider = ({
       $showNum={$showNum}
       $gap={$gap}
       $itemWidth={SIZE.ITEM_IMAGE.WIDTH}
+      $highlight={$highlight}
     >
       <Image
         type="ROOT"
@@ -124,7 +130,11 @@ const Slider = ({
       />
       <ImageList $position={position} $gap={$gap}>
         {Object.values(files).map((file, fileIdx) => (
-          <ImageContainer key={file.name} $isHighlight={idx === fileIdx}>
+          <ImageContainer
+            key={file.name}
+            $isHighlight={idx === fileIdx}
+            $highlight={$highlight}
+          >
             <Image
               type="ITEM"
               file={file}
