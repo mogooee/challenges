@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import styled, { css } from 'styled-components';
+import { useRef, useState, MouseEvent } from 'react';
+import styled from 'styled-components';
 import { INIT, SIZE, PREV_BTN, NEXT_BTN } from '../../../constants';
 import Image from './Image';
 
@@ -15,8 +15,8 @@ type SlideImage = 'PREV' | 'NEXT';
 
 type TImageList = Pick<SliderProps, '$gap'> & { $position: number };
 
-type TStyledSlider = Pick<SliderProps, '$showNum' | '$gap' | '$highlight'> & {
-  $itemWidth: number;
+type TStyledSlider = Pick<SliderProps, '$gap'> & {
+  $width: number;
 };
 
 type TImageContainer = Pick<SliderProps, '$highlight'> & {
@@ -26,13 +26,7 @@ type TImageContainer = Pick<SliderProps, '$highlight'> & {
 const StyledSlider = styled.div<TStyledSlider>`
   display: grid;
   gap: ${({ $gap }) => $gap}px;
-  width: ${({ $showNum, $gap, $itemWidth, $highlight }) => {
-    if (!$showNum || !$gap || !$itemWidth || !$highlight) return;
-    const itemsWidth = $itemWidth * $showNum;
-    const gapsWidth = $gap * ($showNum - 1);
-    const borderWidth = $highlight * 2 * $showNum;
-    return itemsWidth + gapsWidth + borderWidth;
-  }}px;
+  width: ${({ $width }) => $width}px;
   overflow: hidden;
 `;
 
@@ -85,14 +79,15 @@ const Slider = ({
   $highlight = 5,
 }: SliderProps) => {
   const [idx, setIdx] = useState<number>(INIT.INDEX);
-  const [slideIdx, setSlideIdx] = useState<number>(INIT.INDEX);
+  const [highlightIdx, setHighlightIdx] = useState<number>(INIT.INDEX);
   const [position, setPosition] = useState<number>(INIT.POSITION);
+  const sliderRef = useRef<HTMLDivElement>(null);
 
   const idxToOrder = (index: number) => index + 1;
 
   const slideImage = (type: SlideImage) => {
     setIdx((prevIdx) => prevIdx + (type === 'PREV' ? -passNum : +passNum));
-    setSlideIdx((prevIdx) => {
+    setHighlightIdx((prevIdx) => {
       if (type === 'NEXT' && prevIdx === $showNum - 1) {
         return prevIdx;
       }
@@ -106,34 +101,51 @@ const Slider = ({
       const movingPosition =
         (SIZE.ITEM_IMAGE.WIDTH + $gap + $highlight * 2) * passNum;
 
-      if (type === 'PREV' && slideIdx === INIT.INDEX) {
+      if (type === 'PREV' && highlightIdx === INIT.INDEX) {
         return prevPosition + movingPosition;
       }
-      if (type === 'NEXT' && slideIdx === $showNum - 1) {
+      if (type === 'NEXT' && highlightIdx === $showNum - 1) {
         return prevPosition - movingPosition;
       }
       return prevPosition;
     });
   };
 
+  const selectRootIdx = (index: number) => {
+    setIdx(index);
+  };
+
+  const itemsWidth = SIZE.ITEM_IMAGE.WIDTH * $showNum;
+  const gapsWidth = $gap * ($showNum - 1);
+  const borderWidth = $highlight * 2 * $showNum;
+  const imgContainerWidth = itemsWidth + gapsWidth + borderWidth;
+
+  const selectRootHighlightIdx = (e: MouseEvent<HTMLDivElement>) => {
+    if (!sliderRef.current) return;
+    const xCoordinate =
+      e.clientX - sliderRef.current.getBoundingClientRect().left;
+    const xIdx = Math.floor((xCoordinate / imgContainerWidth) * $showNum);
+    setHighlightIdx(xIdx);
+  };
+
   return (
-    <StyledSlider
-      $showNum={$showNum}
-      $gap={$gap}
-      $itemWidth={SIZE.ITEM_IMAGE.WIDTH}
-      $highlight={$highlight}
-    >
+    <StyledSlider $gap={$gap} $width={imgContainerWidth} ref={sliderRef}>
       <Image
         type="ROOT"
         file={files[idx]}
         height={`${SIZE.ROOT_IMAGE.HEIGHT}px`}
       />
-      <ImageList $position={position} $gap={$gap}>
+      <ImageList
+        $position={position}
+        $gap={$gap}
+        onClick={selectRootHighlightIdx}
+      >
         {Object.values(files).map((file, fileIdx) => (
           <ImageContainer
             key={file.name}
             $isHighlight={idx === fileIdx}
             $highlight={$highlight}
+            onClick={() => selectRootIdx(fileIdx)}
           >
             <Image
               type="ITEM"
