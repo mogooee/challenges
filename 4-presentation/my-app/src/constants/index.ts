@@ -13,7 +13,7 @@ export const INIT = {
 export const SIZE = {
   ROOT_IMAGE: {
     WIDTH: 'auto',
-    HEIGHT: 580,
+    HEIGHT: 550,
   },
   ITEM_IMAGE: {
     WIDTH: 135,

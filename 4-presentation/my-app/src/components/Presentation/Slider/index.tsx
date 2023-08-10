@@ -15,7 +15,7 @@ type SlideImage = 'PREV' | 'NEXT';
 
 type TImageList = Pick<SliderProps, '$gap'> & { $position: number };
 
-type TStyledSlider = Pick<SliderProps, '$gap'> & {
+type TStyledSlider = {
   $width: number;
 };
 
@@ -25,7 +25,7 @@ type TImageContainer = Pick<SliderProps, '$highlight'> & {
 
 const StyledSlider = styled.div<TStyledSlider>`
   display: grid;
-  gap: ${({ $gap }) => $gap}px;
+  gap: 35px;
   width: ${({ $width }) => $width}px;
   overflow: hidden;
 `;
@@ -57,7 +57,7 @@ const ImageContainer = styled.div<TImageContainer>`
   img {
     ${({ $isHighlight, $highlight }) =>
       `border: ${$highlight}px solid ${
-        $isHighlight ? 'cornflowerblue' : 'transparent'
+        $isHighlight ? 'cornflowerblue' : 'lightgray'
       }`};
   }
 `;
@@ -83,7 +83,7 @@ const Slider = ({
   passNum = 1,
   $showNum = 3,
   $gap = 20,
-  $highlight = 5,
+  $highlight = 4,
 }: SliderProps) => {
   const [idx, setIdx] = useState<number>(INIT.INDEX);
   const [highlightIdx, setHighlightIdx] = useState<number>(INIT.INDEX);
@@ -136,7 +136,7 @@ const Slider = ({
   };
 
   return (
-    <StyledSlider $gap={$gap} $width={imgContainerWidth} ref={sliderRef}>
+    <StyledSlider $width={imgContainerWidth} ref={sliderRef}>
       <Image
         type="ROOT"
         file={files[idx]}
