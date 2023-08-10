@@ -1,23 +1,42 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import {
+  INIT,
+  SIZE,
+  SLIDE_NEXT,
+  SLIDE_PREV,
+  PREV_BTN,
+  NEXT_BTN,
+} from '../../../constants';
 import Image from './Image';
 
-const StyledSlider = styled.div<{
-  $showNum: number;
-  $gap: number;
+interface SliderProps {
+  files: FileList;
+  passNum?: number;
+  $showNum?: number;
+  $gap?: number;
+}
+
+type SlideImage = typeof SLIDE_PREV | typeof SLIDE_NEXT;
+
+type TImageList = Pick<SliderProps, '$gap'> & { $position: number };
+
+type TStyledSlider = Pick<SliderProps, '$showNum' | '$gap'> & {
   $itemWidth: number;
-}>`
+};
+
+const StyledSlider = styled.div<TStyledSlider>`
   display: grid;
   gap: ${({ $gap }) => $gap}px;
   width: ${({ $showNum, $gap, $itemWidth }) => {
-    const itemsWidth = $itemWidth * $showNum;
-    const gapsWidth = $gap * ($showNum - 1);
+    const itemsWidth = $itemWidth * ($showNum || 0);
+    const gapsWidth = ($gap || 0) * (($showNum || 0) - 1);
     return itemsWidth + gapsWidth;
   }}px;
   overflow: hidden;
 `;
 
-const ImageList = styled.div<{ $position: number; $gap: number }>`
+const ImageList = styled.div<TImageList>`
   display: flex;
   gap: ${({ $gap }) => $gap}px;
   transition: all 0.3s ease-out;
@@ -50,51 +69,55 @@ const Controller = styled.div`
   }
 `;
 
-const [PREV_BTN, NEXT_BTN] = ['<', '>'];
-
-const INIT = {
-  INDEX: 1,
-  POSITION: 0,
-  IMAGE: {
-    WIDTH: 135,
-    HEIGHT: 80,
-  },
-};
-
-interface SliderProps {
-  files: FileList;
-  showNum?: number;
-  passNum?: number;
-  gap?: number;
-}
-
-type SlideImage = 'prev' | 'next';
-
-const Slider = ({ files, showNum = 3, passNum = 1, gap = 20 }: SliderProps) => {
+const Slider = ({
+  files,
+  $showNum = 3,
+  passNum = 1,
+  $gap = 20,
+}: SliderProps) => {
   const [idx, setIdx] = useState<number>(INIT.INDEX);
   const [position, setPosition] = useState<number>(INIT.POSITION);
 
+  const idxToOrder = (index: number) => index + 1;
+
   const slideImage = (type: SlideImage) => {
-    setIdx((prevIdx) => prevIdx + (type === 'prev' ? -passNum : +passNum));
-    setPosition((prevPosition) => {
-      const movingPosition = (INIT.IMAGE.WIDTH + gap) * passNum;
-      return (
-        prevPosition + (type === 'prev' ? +movingPosition : -movingPosition)
-      );
-    });
+    setIdx((prevIdx) => prevIdx + (type === SLIDE_PREV ? -passNum : +passNum));
+    if (
+      (type === SLIDE_PREV && idx >= $showNum) ||
+      (type === SLIDE_NEXT && idx < files.length - $showNum)
+    ) {
+      setPosition((prevPosition) => {
+        const movingPosition = (SIZE.ITEM_IMAGE.WIDTH + $gap) * passNum;
+        return (
+          prevPosition +
+          (type === SLIDE_PREV ? +movingPosition : -movingPosition)
+        );
+      });
+    }
   };
 
   return (
-    <StyledSlider $showNum={showNum} $gap={gap} $itemWidth={INIT.IMAGE.WIDTH}>
-      <ImageList $position={position} $gap={gap}>
-        {Object.values(files).map((file, index) => (
+    <StyledSlider
+      $showNum={$showNum}
+      $gap={$gap}
+      $itemWidth={SIZE.ITEM_IMAGE.WIDTH}
+    >
+      <Image
+        type="ROOT"
+        file={files[idx]}
+        width={SIZE.ROOT_IMAGE.WIDTH}
+        height={`${SIZE.ROOT_IMAGE.HEIGHT}px`}
+      />
+      <ImageList $position={position} $gap={$gap}>
+        {Object.values(files).map((file, fileIdx) => (
           <ImageContainer key={file.name}>
             <Image
+              type="ITEM"
               file={file}
-              width={`${INIT.IMAGE.WIDTH}px`}
-              height={`${INIT.IMAGE.HEIGHT}px`}
+              width={`${SIZE.ITEM_IMAGE.WIDTH}px`}
+              height={`${SIZE.ITEM_IMAGE.HEIGHT}px`}
             />
-            <span>{index + 1}</span>
+            <span>{idxToOrder(fileIdx)}</span>
           </ImageContainer>
         ))}
       </ImageList>
@@ -106,11 +129,11 @@ const Slider = ({ files, showNum = 3, passNum = 1, gap = 20 }: SliderProps) => {
         >
           {PREV_BTN}
         </button>
-        <span id="page-number">{`${idx} / ${files.length}`}</span>
+        <span id="page-number">{`${idxToOrder(idx)} / ${files.length}`}</span>
         <button
           type="button"
-          onClick={() => slideImage('next')}
-          disabled={idx + showNum > files.length}
+          onClick={() => slideImage(SLIDE_NEXT)}
+          disabled={idx === files.length - 1}
         >
           {NEXT_BTN}
         </button>
