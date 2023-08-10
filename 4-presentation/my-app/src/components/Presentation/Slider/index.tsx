@@ -71,29 +71,39 @@ const Controller = styled.div`
 
 const Slider = ({
   files,
-  $showNum = 3,
   passNum = 1,
+  $showNum = 3,
   $gap = 20,
 }: SliderProps) => {
   const [idx, setIdx] = useState<number>(INIT.INDEX);
+  const [slideIdx, setSlideIdx] = useState<number>(INIT.INDEX);
   const [position, setPosition] = useState<number>(INIT.POSITION);
 
   const idxToOrder = (index: number) => index + 1;
 
   const slideImage = (type: SlideImage) => {
-    setIdx((prevIdx) => prevIdx + (type === SLIDE_PREV ? -passNum : +passNum));
-    if (
-      (type === SLIDE_PREV && idx >= $showNum) ||
-      (type === SLIDE_NEXT && idx < files.length - $showNum)
-    ) {
-      setPosition((prevPosition) => {
-        const movingPosition = (SIZE.ITEM_IMAGE.WIDTH + $gap) * passNum;
-        return (
-          prevPosition +
-          (type === SLIDE_PREV ? +movingPosition : -movingPosition)
-        );
-      });
-    }
+    setIdx((prevIdx) => prevIdx + (type === 'PREV' ? -passNum : +passNum));
+    setSlideIdx((prevIdx) => {
+      if (type === 'NEXT' && prevIdx === $showNum - 1) {
+        return prevIdx;
+      }
+      if (type === 'PREV' && prevIdx === INIT.INDEX) {
+        return prevIdx;
+      }
+      return prevIdx + (type === 'PREV' ? -passNum : +passNum);
+    });
+
+    setPosition((prevPosition) => {
+      const movingPosition = (SIZE.ITEM_IMAGE.WIDTH + $gap) * passNum;
+
+      if (type === 'PREV' && slideIdx === INIT.INDEX) {
+        return prevPosition + movingPosition;
+      }
+      if (type === 'NEXT' && slideIdx === $showNum - 1) {
+        return prevPosition - movingPosition;
+      }
+      return prevPosition;
+    });
   };
 
   return (
