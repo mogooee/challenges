@@ -1,8 +1,8 @@
-import { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { TITLE } from '../../constants/index';
 import FileAdder, { FileAdderBtn } from '../FileAdder';
 import Slider from './Slider';
+import useFile from '../../hooks/useFile';
 
 const StyledPresentation = styled.div`
   width: 50%;
@@ -28,8 +28,7 @@ const StyledSlider = styled.div`
 `;
 
 const Presentation = () => {
-  const [files, setFiles] = useState<FileList>();
-  const storeFiles = useRef(new DataTransfer());
+  const { files, addFile, removeFile } = useFile();
 
   return (
     <StyledPresentation>

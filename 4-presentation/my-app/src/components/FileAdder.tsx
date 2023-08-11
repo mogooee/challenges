@@ -1,11 +1,6 @@
-import {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useRef,
-  MutableRefObject,
-} from 'react';
+import { useRef, ChangeEvent } from 'react';
 import styled from 'styled-components';
+import { AddFile } from '../hooks/useFile';
 import { TITLE } from '../constants/index';
 
 export const FileAdderBtn = styled.label`
@@ -26,21 +21,17 @@ export const FileAdderBtn = styled.label`
   }
 `;
 
-const FileAdder = ({
-  setFiles,
-  storeFiles,
-}: {
-  setFiles: Dispatch<SetStateAction<FileList | undefined>>;
-  storeFiles: MutableRefObject<DataTransfer>;
-}) => {
+interface FileAdderProps {
+  addFile: AddFile;
+}
+
+const FileAdder = ({ addFile }: FileAdderProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const changeFileAdder = (event: ChangeEvent<HTMLInputElement>) => {
-    if (!event.target.files || !inputRef.current || !storeFiles.current) return;
-    Array.from(event.target.files).forEach((file) => {
-      storeFiles.current.items.add(file);
-    });
-    inputRef.current.files = storeFiles.current.files;
-    setFiles(storeFiles.current.files);
+
+  const changeInput = (event: ChangeEvent<HTMLInputElement>) => {
+    if (!inputRef.current || !event.target.files) return;
+    const newFiles = addFile(event);
+    inputRef.current.files = newFiles;
   };
 
   return (
@@ -49,7 +40,7 @@ const FileAdder = ({
       <input
         type="file"
         id="file-adder"
-        onChange={changeFileAdder}
+        onChange={changeInput}
         accept="image/png, image/jpeg"
         multiple
         ref={inputRef}
