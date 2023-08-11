@@ -29,6 +29,7 @@ module.exports = {
   rules: {
     'consistent-return': 'off',
     'no-alert': 'off',
+    'no-unused-vars': 'off',
     'prettier/prettier': ['error'],
     'react/require-default-props': 'off',
     'react/react-in-jsx-scope': 'off',
