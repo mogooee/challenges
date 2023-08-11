@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { TITLE } from '../../constants/index';
-import FileAdder from '../FileAdder';
+import FileAdder from './Slider/Contorller/FileAdder';
 import Slider from './Slider';
 import useFile from '../../hooks/useFile';
 

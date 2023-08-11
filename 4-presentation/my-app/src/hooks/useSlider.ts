@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { INIT, SIZE } from '../constants';
 
-type SlideImage = 'PREV' | 'NEXT';
+type SlideImageProps = 'PREV' | 'NEXT';
+export type SlideImage = (type: SlideImageProps) => void;
 interface UseSlider {
   passNum: number;
   showNum: number;
@@ -18,7 +19,7 @@ const useSlider = ({ passNum, showNum, $gap, $highlight }: UseSlider) => {
   const movingPosition =
     (SIZE.ITEM_IMAGE.WIDTH + $gap + $highlight * 2) * passNum;
 
-  const slideImage = (type: SlideImage) => {
+  const slideImage: SlideImage = (type) => {
     setRootIdx((prevIdx) => prevIdx + (type === 'PREV' ? -passNum : +passNum));
     setHighlightIdx((prevIdx) => {
       if (type === 'PREV' && prevIdx === INIT.INDEX) {

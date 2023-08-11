@@ -1,7 +1,7 @@
 import { useRef, ChangeEvent } from 'react';
 import styled from 'styled-components';
-import { AddFile } from '../hooks/useFile';
-import { TITLE } from '../constants/index';
+import { AddFile } from '../../../../hooks/useFile';
+import { TITLE } from '../../../../constants/index';
 
 export const FileAdderBtn = styled.label`
   border: 1px solid black;

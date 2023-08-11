@@ -1,5 +1,5 @@
-import { RemoveFile } from '../hooks/useFile';
-import { TITLE } from '../constants/index';
+import { RemoveFile } from '../../../../hooks/useFile';
+import { TITLE } from '../../../../constants/index';
 
 interface FileMoverProps {
   index: number;

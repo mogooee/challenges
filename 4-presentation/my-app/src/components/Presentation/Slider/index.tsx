@@ -1,10 +1,9 @@
 import { useRef, ChangeEvent } from 'react';
 import styled from 'styled-components';
-import { INIT, SIZE, PREV_BTN, NEXT_BTN } from '../../../constants';
-import FileAdder, { FileAdderBtn } from '../../FileAdder';
-import FileRemover from '../../FileRemover';
+import { SIZE } from '../../../constants';
 import Image from './Image';
 import useSlider from '../../../hooks/useSlider';
+import Controller from './Contorller';
 
 interface SliderProps {
   files: FileList;
@@ -63,52 +62,6 @@ const ImageContainer = styled.div<TImageContainer>`
   }
 `;
 
-const Controller = styled.div`
-  display: flex;
-  justify-content: space-around;
-  width: inherit;
-`;
-
-const SliderController = styled.div`
-  width: inherit;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  font-size: 1.3rem;
-
-  button {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 2rem;
-  }
-`;
-
-const FileController = styled.div`
-  display: flex;
-  gap: 20px;
-
-  ${FileAdderBtn}, button {
-    width: max-content;
-    padding: 10px;
-    font-size: 1rem;
-    cursor: pointer;
-  }
-
-  button {
-    border: 1px solid red;
-    border-radius: 10px;
-    background-color: red;
-    color: white;
-
-    &:hover {
-      background-color: white;
-      color: red;
-    }
-  }
-`;
-
 const Slider = ({
   files,
   addFile,
@@ -133,11 +86,6 @@ const Slider = ({
     $highlight,
   });
   const sliderRef = useRef<HTMLDivElement>(null);
-
-  const filesNum = files.length;
-  const lastFileIdx = filesNum - 1;
-
-  const idxToOrder = (index: number) => index + 1;
 
   const clickImageList = ({ clientX }: { clientX: number }) => {
     if (!sliderRef.current) return;
@@ -167,37 +115,18 @@ const Slider = ({
               width={`${SIZE.ITEM_IMAGE.WIDTH}px`}
               height={`${SIZE.ITEM_IMAGE.HEIGHT}px`}
             />
-            <span>{idxToOrder(fileIdx)}</span>
+            <span>{fileIdx + 1}</span>
           </ImageContainer>
         ))}
       </ImageList>
-      <Controller>
-        <SliderController>
-          <button
-            type="button"
-            onClick={() => slideImage('PREV')}
-            disabled={rootIdx === INIT.INDEX}
-          >
-            {PREV_BTN}
-          </button>
-          <span id="page-number">{`${idxToOrder(rootIdx)} / ${filesNum}`}</span>
-          <button
-            type="button"
-            onClick={() => slideImage('NEXT')}
-            disabled={rootIdx === lastFileIdx}
-          >
-            {NEXT_BTN}
-          </button>
-        </SliderController>
-        <FileController>
-          <FileAdder addFile={addFile} />
-          <FileRemover
-            index={rootIdx}
-            removeFile={removeFile}
-            slideRemoveImage={slideRemoveImage}
-          />
-        </FileController>
-      </Controller>
+      <Controller
+        filesNum={files.length}
+        rootIdx={rootIdx}
+        addFile={addFile}
+        removeFile={removeFile}
+        slideImage={slideImage}
+        slideRemoveImage={slideRemoveImage}
+      />
     </StyledSlider>
   );
 };
