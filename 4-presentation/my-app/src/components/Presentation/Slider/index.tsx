@@ -1,20 +1,20 @@
-import { useRef, useState, MouseEvent, ChangeEvent } from 'react';
+import { useRef, ChangeEvent } from 'react';
 import styled from 'styled-components';
 import { INIT, SIZE, PREV_BTN, NEXT_BTN } from '../../../constants';
 import FileAdder, { FileAdderBtn } from '../../FileAdder';
 import FileRemover from '../../FileRemover';
 import Image from './Image';
+import useSlider from '../../../hooks/useSlider';
 
 interface SliderProps {
   files: FileList;
   addFile: (event: ChangeEvent<HTMLInputElement>) => FileList;
   removeFile: (index: number) => FileList;
   passNum?: number;
-  $showNum?: number;
+  showNum?: number;
   $gap?: number;
   $highlight?: number;
 }
-type SlideImage = 'PREV' | 'NEXT';
 type TImageList = Pick<SliderProps, '$gap'> & { $position: number };
 type TStyledSlider = {
   $width: number;
@@ -114,105 +114,52 @@ const Slider = ({
   addFile,
   removeFile,
   passNum = 1,
-  $showNum = 3,
+  showNum = 3,
   $gap = 20,
   $highlight = 4,
 }: SliderProps) => {
-  const [idx, setIdx] = useState<number>(INIT.INDEX);
-  const [highlightIdx, setHighlightIdx] = useState<number>(INIT.INDEX);
-  const [position, setPosition] = useState<number>(INIT.POSITION);
+  const {
+    rootIdx,
+    setRootIdx,
+    position,
+    sliderWidth,
+    slideImage,
+    slideRemoveImage,
+    updateClickedHighlightIdx,
+  } = useSlider({
+    passNum,
+    showNum,
+    $gap,
+    $highlight,
+  });
   const sliderRef = useRef<HTMLDivElement>(null);
 
+  const filesNum = files.length;
+  const lastFileIdx = filesNum - 1;
+
   const idxToOrder = (index: number) => index + 1;
-  const lastHightlightIdx = $showNum - 1;
-  const totalFilesNum = files.length;
-  const lastFileIdx = totalFilesNum - 1;
 
-  const movingPosition =
-    (SIZE.ITEM_IMAGE.WIDTH + $gap + $highlight * 2) * passNum;
-
-  const slideImage = (type: SlideImage) => {
-    setIdx((prevIdx) => prevIdx + (type === 'PREV' ? -passNum : +passNum));
-    setHighlightIdx((prevIdx) => {
-      if (type === 'PREV' && prevIdx === INIT.INDEX) {
-        return prevIdx;
-      }
-      if (type === 'NEXT' && prevIdx === lastHightlightIdx) {
-        return prevIdx;
-      }
-      return prevIdx + (type === 'PREV' ? -passNum : +passNum);
-    });
-    setPosition((prevPosition) => {
-      if (type === 'PREV' && highlightIdx === INIT.INDEX) {
-        return prevPosition + movingPosition;
-      }
-      if (type === 'NEXT' && highlightIdx === lastHightlightIdx) {
-        return prevPosition - movingPosition;
-      }
-      return prevPosition;
-    });
-  };
-
-  const selectRootIdx = (index: number) => {
-    setIdx(index);
-  };
-
-  const itemsWidth = SIZE.ITEM_IMAGE.WIDTH * $showNum;
-  const gapsWidth = $gap * lastHightlightIdx;
-  const borderWidth = $highlight * 2 * $showNum;
-  const imgContainerWidth = itemsWidth + gapsWidth + borderWidth;
-
-  const selectRootHighlightIdx = (e: MouseEvent<HTMLDivElement>) => {
+  const clickImageList = ({ clientX }: { clientX: number }) => {
     if (!sliderRef.current) return;
     const xCoordinate =
-      e.clientX - sliderRef.current.getBoundingClientRect().left;
-    const xIdx = Math.floor((xCoordinate / imgContainerWidth) * $showNum);
-    setHighlightIdx(xIdx);
-  };
-
-  const setFileRemoveState = () => {
-    setIdx((prevIdx) => {
-      if (prevIdx === INIT.INDEX) return INIT.INDEX;
-      return prevIdx - 1;
-    });
-    setHighlightIdx((prevIdx) => {
-      if (prevIdx === INIT.INDEX) {
-        return prevIdx;
-      }
-      if (prevIdx === lastHightlightIdx && idx !== lastHightlightIdx) {
-        return prevIdx;
-      }
-      return prevIdx - 1;
-    });
-    setPosition((prevPosition) => {
-      if (highlightIdx === INIT.INDEX && idx !== INIT.INDEX) {
-        return prevPosition + movingPosition;
-      }
-      if (highlightIdx === lastHightlightIdx && idx !== lastHightlightIdx) {
-        return prevPosition + movingPosition;
-      }
-      return prevPosition;
-    });
+      clientX - sliderRef!.current.getBoundingClientRect().left;
+    updateClickedHighlightIdx(xCoordinate);
   };
 
   return (
-    <StyledSlider $width={imgContainerWidth} ref={sliderRef}>
+    <StyledSlider $width={sliderWidth} ref={sliderRef}>
       <Image
         type="ROOT"
-        file={files[idx]}
+        file={files[rootIdx]}
         height={`${SIZE.ROOT_IMAGE.HEIGHT}px`}
       />
-      <ImageList
-        $position={position}
-        $gap={$gap}
-        onClick={selectRootHighlightIdx}
-      >
+      <ImageList $position={position} $gap={$gap} onClick={clickImageList}>
         {Object.values(files).map((file: File, fileIdx: number) => (
           <ImageContainer
             key={file.name}
-            $isHighlight={idx === fileIdx}
+            $isHighlight={rootIdx === fileIdx}
             $highlight={$highlight}
-            onClick={() => selectRootIdx(fileIdx)}
+            onClick={() => setRootIdx(fileIdx)}
           >
             <Image
               type="ITEM"
@@ -229,17 +176,15 @@ const Slider = ({
           <button
             type="button"
             onClick={() => slideImage('PREV')}
-            disabled={idx === INIT.INDEX}
+            disabled={rootIdx === INIT.INDEX}
           >
             {PREV_BTN}
           </button>
-          <span id="page-number">{`${idxToOrder(
-            idx,
-          )} / ${totalFilesNum}`}</span>
+          <span id="page-number">{`${idxToOrder(rootIdx)} / ${filesNum}`}</span>
           <button
             type="button"
             onClick={() => slideImage('NEXT')}
-            disabled={idx === lastFileIdx}
+            disabled={rootIdx === lastFileIdx}
           >
             {NEXT_BTN}
           </button>
@@ -247,9 +192,9 @@ const Slider = ({
         <FileController>
           <FileAdder addFile={addFile} />
           <FileRemover
-            index={idx}
+            index={rootIdx}
             removeFile={removeFile}
-            setSliderState={setFileRemoveState}
+            slideRemoveImage={slideRemoveImage}
           />
         </FileController>
       </Controller>

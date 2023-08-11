@@ -19,6 +19,7 @@ const StyledPresentation = styled.div`
 
 const Presentation = () => {
   const { files, addFile, removeFile } = useFile();
+  const showNum = 5;
 
   return (
     <StyledPresentation>
@@ -27,7 +28,7 @@ const Presentation = () => {
           files={files}
           addFile={addFile}
           removeFile={removeFile}
-          $showNum={5}
+          showNum={showNum}
         />
       ) : (
         <>
