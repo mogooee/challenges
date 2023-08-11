@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { SlideImage } from '../../../../hooks/useSlider';
 import { AddFile, RemoveFile } from '../../../../hooks/useFile';
-import { INIT, PREV_BTN, NEXT_BTN } from '../../../../constants';
+import { PREV_BTN, NEXT_BTN } from '../../../../constants';
 import FileAdder, { FileAdderBtn } from './FileAdder';
 import FileRemover from './FileRemover';
 
@@ -52,8 +52,10 @@ const FileController = styled.div`
 `;
 
 interface ControllerProps {
-  filesNum: number;
+  pageList: string;
   rootIdx: number;
+  prevDisabled: boolean;
+  nextDisabled: boolean;
   addFile: AddFile;
   removeFile: RemoveFile;
   slideImage: SlideImage;
@@ -61,43 +63,41 @@ interface ControllerProps {
 }
 
 const Controller = ({
-  filesNum,
+  pageList,
   rootIdx,
+  prevDisabled,
+  nextDisabled,
   addFile,
   removeFile,
   slideImage,
   slideRemoveImage,
-}: ControllerProps) => {
-  const lastFileIdx = filesNum - 1;
-
-  return (
-    <StyledController>
-      <SliderController>
-        <button
-          type="button"
-          onClick={() => slideImage('PREV')}
-          disabled={rootIdx === INIT.INDEX}
-        >
-          {PREV_BTN}
-        </button>
-        <span id="page-number">{`${rootIdx + 1} / ${filesNum}`}</span>
-        <button
-          type="button"
-          onClick={() => slideImage('NEXT')}
-          disabled={rootIdx === lastFileIdx}
-        >
-          {NEXT_BTN}
-        </button>
-      </SliderController>
-      <FileController>
-        <FileAdder addFile={addFile} />
-        <FileRemover
-          index={rootIdx}
-          removeFile={removeFile}
-          slideRemoveImage={slideRemoveImage}
-        />
-      </FileController>
-    </StyledController>
-  );
-};
+}: ControllerProps) => (
+  <StyledController>
+    <SliderController>
+      <button
+        type="button"
+        onClick={() => slideImage('PREV')}
+        disabled={prevDisabled}
+      >
+        {PREV_BTN}
+      </button>
+      <span id="page-number">{pageList}</span>
+      <button
+        type="button"
+        onClick={() => slideImage('NEXT')}
+        disabled={nextDisabled}
+      >
+        {NEXT_BTN}
+      </button>
+    </SliderController>
+    <FileController>
+      <FileAdder addFile={addFile} />
+      <FileRemover
+        index={rootIdx}
+        removeFile={removeFile}
+        slideRemoveImage={slideRemoveImage}
+      />
+    </FileController>
+  </StyledController>
+);
 export default Controller;

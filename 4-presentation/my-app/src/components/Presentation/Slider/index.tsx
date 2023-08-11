@@ -1,11 +1,12 @@
 import { useRef, ChangeEvent } from 'react';
 import styled from 'styled-components';
-import { SIZE } from '../../../constants';
-import Image from './Image';
+import { INIT, SIZE } from '../../../constants';
+import Image from './ImageListSlider/Image';
 import useSlider from '../../../hooks/useSlider';
 import Controller from './Contorller';
+import ImagelistSlider from './ImageListSlider';
 
-interface SliderProps {
+export interface SliderProps {
   files: FileList;
   addFile: (event: ChangeEvent<HTMLInputElement>) => FileList;
   removeFile: (index: number) => FileList;
@@ -14,12 +15,8 @@ interface SliderProps {
   $gap?: number;
   $highlight?: number;
 }
-type TImageList = Pick<SliderProps, '$gap'> & { $position: number };
 type TStyledSlider = {
   $width: number;
-};
-type TImageContainer = Pick<SliderProps, '$highlight'> & {
-  $isHighlight: boolean;
 };
 
 const StyledSlider = styled.div<TStyledSlider>`
@@ -27,39 +24,6 @@ const StyledSlider = styled.div<TStyledSlider>`
   gap: 35px;
   width: ${({ $width }) => $width}px;
   overflow: hidden;
-`;
-
-const ImageList = styled.div<TImageList>`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: ${({ $gap }) => $gap}px;
-  transition: all 0.3s ease-out;
-  transform: translateX(${({ $position }) => $position}px);
-
-  span {
-    display: block;
-  }
-`;
-
-const ImageContainer = styled.div<TImageContainer>`
-  display: grid;
-  place-items: center;
-  gap: 10px;
-  cursor: pointer;
-
-  &:hover {
-    img {
-      opacity: 0.5;
-    }
-  }
-
-  img {
-    ${({ $isHighlight, $highlight }) =>
-      `border: ${$highlight}px solid ${
-        $isHighlight ? 'cornflowerblue' : 'lightgray'
-      }`};
-  }
 `;
 
 const Slider = ({
@@ -94,6 +58,14 @@ const Slider = ({
     updateClickedHighlightIdx(xCoordinate);
   };
 
+  const lastFileIdx = files.length - 1;
+  const [prevDisabled, nextDisabled] = [
+    rootIdx === INIT.INDEX,
+    rootIdx === lastFileIdx,
+  ];
+
+  const pageList = `${rootIdx + 1} / ${files.length}`;
+
   return (
     <StyledSlider $width={sliderWidth} ref={sliderRef}>
       <Image
@@ -101,27 +73,20 @@ const Slider = ({
         file={files[rootIdx]}
         height={`${SIZE.ROOT_IMAGE.HEIGHT}px`}
       />
-      <ImageList $position={position} $gap={$gap} onClick={clickImageList}>
-        {Object.values(files).map((file: File, fileIdx: number) => (
-          <ImageContainer
-            key={file.name}
-            $isHighlight={rootIdx === fileIdx}
-            $highlight={$highlight}
-            onClick={() => setRootIdx(fileIdx)}
-          >
-            <Image
-              type="ITEM"
-              file={file}
-              width={`${SIZE.ITEM_IMAGE.WIDTH}px`}
-              height={`${SIZE.ITEM_IMAGE.HEIGHT}px`}
-            />
-            <span>{fileIdx + 1}</span>
-          </ImageContainer>
-        ))}
-      </ImageList>
-      <Controller
-        filesNum={files.length}
+      <ImagelistSlider
+        files={files}
         rootIdx={rootIdx}
+        setRootIdx={setRootIdx}
+        position={position}
+        clickImageList={clickImageList}
+        $gap={$gap}
+        $highlight={$highlight}
+      />
+      <Controller
+        pageList={pageList}
+        rootIdx={rootIdx}
+        prevDisabled={prevDisabled}
+        nextDisabled={nextDisabled}
         addFile={addFile}
         removeFile={removeFile}
         slideImage={slideImage}
