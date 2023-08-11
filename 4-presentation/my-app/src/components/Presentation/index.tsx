@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { TITLE } from '../../constants/index';
-import FileAdder, { FileAdderBtn } from '../FileAdder';
+import FileAdder from '../FileAdder';
 import Slider from './Slider';
 import useFile from '../../hooks/useFile';
 
@@ -17,30 +17,22 @@ const StyledPresentation = styled.div`
   padding: 30px;
 `;
 
-const StyledSlider = styled.div`
-  position: relative;
-
-  ${FileAdderBtn} {
-    position: absolute;
-    bottom: 0;
-    right: 30px;
-  }
-`;
-
 const Presentation = () => {
   const { files, addFile, removeFile } = useFile();
 
   return (
     <StyledPresentation>
-      {files ? (
-        <StyledSlider>
-          <Slider files={files} $showNum={5} />
-          <FileAdder storeFiles={storeFiles} setFiles={setFiles} />
-        </StyledSlider>
+      {files?.length ? (
+        <Slider
+          files={files}
+          addFile={addFile}
+          removeFile={removeFile}
+          $showNum={5}
+        />
       ) : (
         <>
           <h1>{TITLE.PRESENTIATION}</h1>
-          <FileAdder storeFiles={storeFiles} setFiles={setFiles} />
+          <FileAdder addFile={addFile} />
         </>
       )}
     </StyledPresentation>

@@ -1,6 +1,7 @@
 export const TITLE = {
   PRESENTIATION: '4th challenge - Presentation',
   FILE_ADDER: '사진 추가',
+  FILE_REMOVER: '사진 삭제',
 };
 
 export const [PREV_BTN, NEXT_BTN] = ['<', '>'];
