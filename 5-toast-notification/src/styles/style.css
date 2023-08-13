@@ -31,6 +31,24 @@ main{
   background-color: var(--main-bg-color);
 }
 
+.notification-stack{
+  position: absolute;
+  top: 26px;
+  left: 32px;
+  max-height: 90vh;
+  overflow-y: scroll;
+  -ms-overflow-style: none; 
+  scrollbar-width: none; 
+}
+
+.notification-stack::-webkit-scrollbar{
+  display: none;
+}
+
+.notification-stack > div + div{
+  margin-top: 16px;
+}
+
 .toast-notification{
   width: 439px;
   height: 76px;

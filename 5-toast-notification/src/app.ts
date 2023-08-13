@@ -1,5 +1,4 @@
 import { $ } from '@/utils';
-import Notification from '@/components/Notification';
 import NotificationSetter from '@/components/NotificationSetter';
 
 class App {
@@ -21,14 +20,8 @@ class App {
     this.render();
     const mainDOM = $('main');
     if (!mainDOM) return;
-    const notification = new Notification(
-      mainDOM,
-      'info',
-      'Info toast notification',
-    );
     const notificationSetter = new NotificationSetter(mainDOM);
-    notification.init();
-    notificationSetter.render();
+    notificationSetter.init();
   };
 }
 

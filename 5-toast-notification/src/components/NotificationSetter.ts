@@ -1,30 +1,61 @@
-import { toPascalCase } from '@/utils';
-import { NotificationType } from '@/components/Notification';
+import { $, toPascalCase } from '@/utils';
+import Notification, { NotificationType } from '@/components/Notification';
 
+interface NotificationTypes {
+  type: NotificationType;
+  message: string;
+}
+const notificationTypes: NotificationTypes[] = [
+  { type: 'success', message: 'Success toast notification' },
+  { type: 'info', message: 'Info toast notification' },
+  { type: 'warning', message: 'Warning toast notification' },
+  { type: 'error', message: 'Error toast notification' },
+];
 class NotificationSetter {
-  target: Element;
+  parent: Element;
 
-  static notificationTypes: NotificationType[] = [
-    'success',
-    'info',
-    'warning',
-    'error',
-  ];
+  target: Element | null;
 
-  constructor(target: Element) {
-    this.target = target;
+  constructor(parent: Element) {
+    this.parent = parent;
+    this.target = null;
   }
 
+  init = () => {
+    this.render();
+    this.setEvents();
+  };
+
   render = () => {
-    this.target.insertAdjacentHTML('beforeend', NotificationSetter.template());
+    this.parent.insertAdjacentHTML('beforeend', NotificationSetter.template());
   };
 
   static template = () => {
     return `<div class='notification-setter'>
-    ${NotificationSetter.notificationTypes
-      .map((type) => `<button class=${type}>${toPascalCase(type)}</button>`)
+    ${notificationTypes
+      .map(({ type }) => `<button class=${type}>${toPascalCase(type)}</button>`)
       .join('')}
-    </div>`;
+    </div>
+    <div class='notification-stack'></div>
+    `;
+  };
+
+  setEvents = () => {
+    this.setTarget();
+    this.target?.addEventListener('click', NotificationSetter.setNotification);
+  };
+
+  setTarget = () => {
+    this.target = $('.notification-setter');
+  };
+
+  static setNotification = ({ target }: Event) => {
+    if (!(target instanceof HTMLElement)) return;
+    if (target.tagName !== 'BUTTON') return;
+    const type = target.className as NotificationType;
+    const message = notificationTypes.find((e) => e.type === type)?.message;
+    const notification = new Notification(type, message!);
+    notification.init();
   };
 }
 

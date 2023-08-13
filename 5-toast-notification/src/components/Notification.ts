@@ -4,18 +4,18 @@ import { $ } from '@/utils';
 export type NotificationType = 'success' | 'info' | 'warning' | 'error';
 
 class Notification {
-  parent: Element;
-
   type: NotificationType;
 
   message: string;
 
+  parent: Element | null;
+
   target: Element | null;
 
-  constructor(parent: Element, type: NotificationType, message: string) {
-    this.parent = parent;
+  constructor(type: NotificationType, message: string) {
     this.type = type;
     this.message = message;
+    this.parent = null;
     this.target = null;
   }
 
@@ -25,7 +25,8 @@ class Notification {
   };
 
   render = () => {
-    this.parent.insertAdjacentHTML('beforeend', this.template());
+    this.parent = $('.notification-stack');
+    this.parent?.insertAdjacentHTML('afterbegin', this.template());
   };
 
   template = () => {
@@ -37,7 +38,7 @@ class Notification {
 
   setEvents = () => {
     this.setTarget();
-    this.target?.addEventListener('click', this.removeNotification);
+    this.target?.addEventListener('click', Notification.removeNotification);
   };
 
   setTarget = () => {
@@ -46,10 +47,11 @@ class Notification {
     this.target = target;
   };
 
-  removeNotification = ({ target }: Event) => {
+  static removeNotification = ({ target }: Event) => {
     if (!(target instanceof HTMLElement)) return;
     if (target.tagName !== 'BUTTON') return;
-    this.target?.remove();
+    const notification = target.closest('.toast-notification');
+    notification?.remove();
   };
 }
 
