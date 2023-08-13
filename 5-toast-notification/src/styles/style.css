@@ -57,6 +57,13 @@ main{
   border-radius: 8px;
   padding: 26px 16px;
   background-color: var(--notification-bg-color);
+  transition: all 0.5s ease-out;
+  transform: translateX(-439px);
+}
+
+.on{
+  transition: all 0.5s ease-out;
+  transform: translateX(0px);
 }
 
 .toast-notification span{

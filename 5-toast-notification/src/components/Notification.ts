@@ -12,11 +12,17 @@ class Notification {
 
   target: Element | null;
 
+  autoTimer: number;
+
+  animationDelay: number;
+
   constructor(type: NotificationType, message: string) {
     this.type = type;
     this.message = message;
     this.parent = null;
     this.target = null;
+    this.autoTimer = 4000;
+    this.animationDelay = 550;
   }
 
   init = () => {
@@ -27,6 +33,9 @@ class Notification {
   render = () => {
     this.parent = $('.notification-stack');
     this.parent?.insertAdjacentHTML('afterbegin', this.template());
+    setTimeout(() => {
+      this.target?.classList.add('on');
+    });
   };
 
   template = () => {
@@ -38,7 +47,8 @@ class Notification {
 
   setEvents = () => {
     this.setTarget();
-    this.target?.addEventListener('click', Notification.removeNotification);
+    this.setAutoTimer();
+    this.target?.addEventListener('click', this.removeNotification);
   };
 
   setTarget = () => {
@@ -47,11 +57,23 @@ class Notification {
     this.target = target;
   };
 
-  static removeNotification = ({ target }: Event) => {
+  setAutoTimer = () => {
+    setTimeout(() => {
+      this.target?.classList.toggle('on');
+    }, this.autoTimer);
+    setTimeout(() => {
+      this.target?.remove();
+    }, this.autoTimer + this.animationDelay);
+  };
+
+  removeNotification = ({ target }: Event) => {
     if (!(target instanceof HTMLElement)) return;
     if (target.tagName !== 'BUTTON') return;
     const notification = target.closest('.toast-notification');
-    notification?.remove();
+    notification?.classList.toggle('on');
+    setTimeout(() => {
+      notification?.remove();
+    }, this.animationDelay);
   };
 }
 
