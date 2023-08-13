@@ -27,7 +27,7 @@ class App {
       'Info toast notification',
     );
     const notificationSetter = new NotificationSetter(mainDOM);
-    notification.render();
+    notification.init();
     notificationSetter.render();
   };
 }

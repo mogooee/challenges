@@ -20,6 +20,10 @@ button{
   cursor: pointer;
 }
 
+svg {
+  pointer-events: none;
+}
+
 main{
   height: 100vh;
   display: grid;
@@ -40,10 +44,6 @@ main{
 .toast-notification span{
   font-size: 20px;
   color: var(--text-color)
-}
-
-.toast-notification svg {
-  cursor: pointer;
 }
 
 .toast-notification > svg:first-child{
