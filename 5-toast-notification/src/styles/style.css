@@ -33,9 +33,7 @@ main{
 
 .notification-stack{
   position: absolute;
-  top: 26px;
-  left: 32px;
-  max-height: 90vh;
+  max-height: 98vh;
   overflow-y: scroll;
   -ms-overflow-style: none; 
   scrollbar-width: none; 
@@ -45,32 +43,20 @@ main{
   display: none;
 }
 
-.notification-stack > div + div{
-  margin-top: 16px;
-}
-
 .toast-notification{
-  width: 439px;
-  height: 76px;
   display:flex; 
   align-items: center;
   border-radius: 8px;
-  padding: 26px 16px;
   background-color: var(--notification-bg-color);
+  position: relative;
   transition: all 0.5s ease-out;
-  transform: translateX(-439px);
-}
-
-.on{
-  transition: all 0.5s ease-out;
-  transform: translateX(0px);
 }
 
 .toast-notification:hover{
-  animation: motion 1.5s linear 0s infinite;
+  animation: bounce 1.5s linear 0s infinite;
 }
 
-@keyframes motion {
+@keyframes bounce {
 	0% {margin-left: 0px;}
 	20% {margin-left: 5px;}
 	40% {margin-left: 0px;}
@@ -80,7 +66,6 @@ main{
 }
 
 .toast-notification span{
-  font-size: 20px;
   color: var(--text-color)
 }
 
@@ -111,18 +96,13 @@ main{
 .notification-setter{
   display: grid;
   place-items: center;
-  width: 512px;
-  height: 505px;
-  padding: 50px 36px;
   background-color: var(--notification-bg-color);
   border-radius: 8px; 
 }
 
 .notification-setter button{
   width: 100%;
-  padding: 21px 162px;
   border-radius: 8px;
-  font-size: 28px;
   font-weight: bolder;
   color: var(--notification-bg-color);
 }
@@ -141,4 +121,119 @@ main{
 
 .notification-setter > .error{
   background-color: var(--error-color);
+}
+
+@media screen and (min-width: 1024px){
+  .toast-notification{
+    width: 439px;
+    height: 76px;
+    padding: 26px 16px;
+    transform: translateX(-439px);
+  }
+
+  .notification-stack{
+  top: 26px;
+  left: 32px;
+  }
+
+  .notification-stack > div + div{
+    margin-top: 16px;
+  }
+
+  .toast-notification span{
+    font-size: 20px;
+  }
+
+  .notification-setter{
+    width: 512px;
+    height: 505px;
+    padding: 50px 36px;
+  }
+
+  .notification-setter button{
+    padding: 21px 162px;
+    font-size: 28px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px){
+  .toast-notification{
+    width: 239px;
+    padding: 18px 18px;
+    transform: translateX(-239px);
+  }
+
+  .toast-notification span{
+    font-size: 16px;
+  }
+
+  .notification-stack{
+    top: 12px;
+    left: 18px;
+  }
+
+  .notification-stack > div + div{
+    margin-top: 12px;
+  }
+
+  .notification-setter{
+    width: 312px;
+    height: 350px;
+    padding: 40px 26px;
+  }
+
+  .notification-setter button{
+    padding: 16px 82px;
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 767px){
+  .toast-notification{
+    width: 139px;
+    flex-wrap:wrap; 
+    padding: 10px 10px;
+    transform: translateX(-139px);
+  }
+
+  .toast-notification span{
+    font-size: 12px;
+  }
+
+  .toast-notification > svg:first-child{
+    margin-bottom: 10px;
+  }
+
+  .notification-cancel{
+    position: absolute;
+    right: 10px;
+    top: 12px;
+  }
+
+  .notification-stack > div + div{
+    margin-top: 8px;
+  }
+
+  .notification-stack{
+    top: 6px;
+    left: 12px;
+  }
+
+  .notification-setter{
+    width: 151px;
+    height: 160px;
+    padding: 10px 8px;
+  }
+
+  .notification-setter button{
+    padding: 8px 42px;
+    font-size: 12px;
+  }
+}
+
+@media all{
+  .on{
+    transition: all 0.5s ease-out;
+    transform: translateX(0px);
+  }
 }
