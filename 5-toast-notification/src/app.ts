@@ -1,5 +1,6 @@
-import Notification from '@/components/Notification';
 import { $ } from '@/utils';
+import Notification from '@/components/Notification';
+import NotificationSetter from '@/components/NotificationSetter';
 
 class App {
   target: Element;
@@ -18,12 +19,16 @@ class App {
 
   mount = () => {
     this.render();
-    const notication = new Notification(
-      $('main')!,
+    const mainDOM = $('main');
+    if (!mainDOM) return;
+    const notification = new Notification(
+      mainDOM,
       'info',
       'Info toast notification',
     );
-    notication.render();
+    const notificationSetter = new NotificationSetter(mainDOM);
+    notification.render();
+    notificationSetter.render();
   };
 }
 

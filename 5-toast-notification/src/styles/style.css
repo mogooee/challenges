@@ -1,8 +1,6 @@
 @import '@/styles/reset.css';
 
-* {
-  box-sizing: border-box;
-
+:root{
   --main-bg-color: #F0F3FB;
   --notification-bg-color: #ffffff;
   --text-color: #151626;
@@ -10,6 +8,16 @@
   --information-color: #3B82F6;
   --warning-color: #F97316;
   --error-color: #EF4444;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button{
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
 }
 
 main{
@@ -38,28 +46,61 @@ main{
   cursor: pointer;
 }
 
-.toast-notification svg:first-child{
+.toast-notification > svg:first-child{
   margin-right: 32px;
 }
 
-.info{
+.notification-cancel{
+  margin-left: auto;
+}
+
+.notify-info{
   box-shadow: inset 0 -4px var(--information-color);
 }
 
-.success{
+.notify-success{
   box-shadow: inset 0 -4px var(--success-color);
 }
 
-.warning{
+.notify-warning{
   box-shadow: inset 0 -4px var(--warning-color);
 }
 
-.error{
+.notify-error{
   box-shadow: inset 0 -4px var(--error-color);
 }
 
-.notification-cancel{
-  border: none;
-  margin-left: auto;
-  background-color: transparent;
+.notification-setter{
+  display: grid;
+  place-items: center;
+  width: 512px;
+  height: 505px;
+  padding: 50px 36px;
+  background-color: var(--notification-bg-color);
+  border-radius: 8px; 
+}
+
+.notification-setter button{
+  width: 100%;
+  padding: 21px 162px;
+  border-radius: 8px;
+  font-size: 28px;
+  font-weight: bolder;
+  color: var(--notification-bg-color);
+}
+
+.notification-setter > .info{
+  background-color: var(--information-color);
+}
+
+.notification-setter > .success{
+  background-color: var(--success-color);
+}
+
+.notification-setter > .warning{
+  background-color: var(--warning-color);
+}
+
+.notification-setter > .error{
+  background-color: var(--error-color);
 }
