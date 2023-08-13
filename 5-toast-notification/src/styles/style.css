@@ -1,1 +1,65 @@
 @import '@/styles/reset.css';
+
+* {
+  box-sizing: border-box;
+
+  --main-bg-color: #F0F3FB;
+  --notification-bg-color: #ffffff;
+  --text-color: #151626;
+  --success-color: #22C55E;
+  --information-color: #3B82F6;
+  --warning-color: #F97316;
+  --error-color: #EF4444;
+}
+
+main{
+  height: 100vh;
+  display: grid;
+  place-items: center;
+  background-color: var(--main-bg-color);
+}
+
+.toast-notification{
+  width: 439px;
+  height: 76px;
+  display:flex; 
+  align-items: center;
+  border-radius: 8px;
+  padding: 26px 16px;
+  background-color: var(--notification-bg-color);
+}
+
+.toast-notification span{
+  font-size: 20px;
+  color: var(--text-color)
+}
+
+.toast-notification svg {
+  cursor: pointer;
+}
+
+.toast-notification svg:first-child{
+  margin-right: 32px;
+}
+
+.info{
+  box-shadow: inset 0 -4px var(--information-color);
+}
+
+.success{
+  box-shadow: inset 0 -4px var(--success-color);
+}
+
+.warning{
+  box-shadow: inset 0 -4px var(--warning-color);
+}
+
+.error{
+  box-shadow: inset 0 -4px var(--error-color);
+}
+
+.notification-cancel{
+  border: none;
+  margin-left: auto;
+  background-color: transparent;
+}
