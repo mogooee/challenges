@@ -19,6 +19,11 @@ module.exports = {
         use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
       },
       {
+        test: /\.svg/,
+        type: 'asset/source',
+        include: path.resolve(__dirname, 'src'),
+      },
+      {
         test: /\.(ts|js)$/,
         exclude: /node_modules/,
         use: {
