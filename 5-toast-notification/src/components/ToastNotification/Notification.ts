@@ -1,6 +1,12 @@
 import { $ } from '@/utils';
 import * as icon from '@/assets/icons';
-import { ANIMATION_DELAY, NotificationType } from '@/constants';
+import {
+  ANIMATION_DELAY,
+  NotificationType,
+  PROGRESS,
+  Timer,
+  TimerMode,
+} from '@/constants';
 
 class Notification {
   type: NotificationType;
@@ -9,13 +15,22 @@ class Notification {
 
   autoTimer: number;
 
-  target: Element | null;
+  progressValue: number;
+
+  target: HTMLDivElement | null;
+
+  progressDOM: HTMLProgressElement | null;
+
+  timer: Timer;
 
   constructor(type: NotificationType, message: string, autoTimer: number) {
     this.type = type;
     this.message = message;
     this.autoTimer = autoTimer;
+    this.progressValue = PROGRESS.INIT_VALUE;
     this.target = null;
+    this.progressDOM = null;
+    this.timer = { progressBar: null, animation: null, remover: null };
   }
 
   init = () => {
@@ -35,43 +50,54 @@ class Notification {
               ${icon[this.type]}
               <span>${this.message}</span>
               <button class='cancel-btn'>${icon.cancel}</button>
-              <progress value="1" max="1"></progress>
+              <progress value="${PROGRESS.MAX_VALUE}"
+               max="${PROGRESS.MAX_VALUE}"></progress>
            </div>`;
   };
 
   setEvents = () => {
     this.setTarget();
-    this.setAutoTimer();
+    this.setAutoTimer('PLAY');
+    this.target?.addEventListener('mouseenter', () => {
+      this.setAutoTimer('STOP');
+    });
+    this.target?.addEventListener('mouseleave', () => {
+      this.setAutoTimer('PLAY');
+    });
   };
 
   setTarget = () => {
-    const target = $('.notification');
-    if (!target) return;
-    this.target = target;
+    this.target = $('.notification') as HTMLDivElement;
   };
 
-  setAutoTimer = () => {
-    const { progressDOM, progressTimer } = this.setProgressBar();
-    setTimeout(() => {
-      progressDOM.value = 0;
-      clearInterval(progressTimer);
-      this.target?.classList.toggle('on');
-    }, this.autoTimer);
-    setTimeout(() => {
-      this.target?.remove();
-    }, this.autoTimer + ANIMATION_DELAY);
+  setAutoTimer = (mode: TimerMode) => {
+    if (mode === 'PLAY') {
+      const autoTime = this.autoTimer - this.progressValue * PROGRESS.TIMER;
+      this.setProgressBar();
+      this.timer.animation = setTimeout(() => {
+        this.progressDOM!.value = PROGRESS.INIT_VALUE;
+        clearInterval(this.timer.progressBar!);
+        this.target?.classList.toggle('on');
+      }, autoTime);
+      this.timer.remover = setTimeout(() => {
+        this.target?.remove();
+      }, autoTime + ANIMATION_DELAY);
+      return;
+    }
+    clearInterval(this.timer.progressBar!);
+    clearTimeout(this.timer.animation!);
+    clearTimeout(this.timer.remover!);
   };
 
   setProgressBar = () => {
-    let progress = 0;
-    const [progressTime, progressMax] = [100, 1];
-    const progressDOM = this.target?.querySelector('progress')!;
-    const progressTimer = setInterval(() => {
-      const progressRate = progress / (this.autoTimer / progressTime);
-      progressDOM.value = progressMax - progressRate;
-      progress += 1;
-    }, progressTime);
-    return { progressDOM, progressTimer };
+    this.progressDOM = this.target?.querySelector(
+      'progress',
+    ) as HTMLProgressElement;
+    this.timer.progressBar = setInterval(() => {
+      const rate = this.progressValue / (this.autoTimer / PROGRESS.TIMER);
+      this.progressDOM!.value = PROGRESS.MAX_VALUE - rate;
+      this.progressValue += 1;
+    }, PROGRESS.TIMER);
   };
 }
 
