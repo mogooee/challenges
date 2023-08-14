@@ -44,7 +44,6 @@ main{
 }
 
 .notification{
-  display:flex; 
   align-items: center;
   border-radius: 8px;
   background-color: var(--notification-bg-color);
@@ -72,6 +71,12 @@ main{
 
 .notification > svg:first-child{
   margin-right: 32px;
+}
+
+.notification progress{
+  grid-column: 1/ 4;
+  width: 100%;
+  margin-top: 10px;
 }
 
 .cancel-btn{
@@ -128,6 +133,9 @@ main{
   .notification{
     width: 439px;
     height: 76px;
+    display: grid; 
+    grid-template-columns: auto 1fr auto;
+    align-content: center;
     padding: 26px 16px;
     transform: translateX(-439px);
   }
@@ -160,6 +168,9 @@ main{
 @media (min-width: 768px) and (max-width: 1023px){
   .notification{
     width: 239px;
+    display: grid; 
+    grid-template-columns: auto 1fr auto;
+    align-content: center;
     padding: 18px 18px;
     transform: translateX(-239px);
   }
@@ -192,6 +203,7 @@ main{
 @media (min-width: 320px) and (max-width: 767px){
   .notification{
     width: 139px;
+    display: flex;
     flex-wrap:wrap; 
     padding: 10px 10px;
     transform: translateX(-139px);
