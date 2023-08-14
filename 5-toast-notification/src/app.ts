@@ -1,5 +1,6 @@
-import { $ } from '@/utils';
-import NotificationSetter from '@/components/NotificationSetter';
+import { NOTIFICATIONS } from '@/constants';
+import Setter from '@/components/ToastNotification/Setter';
+import Stack from '@/components/ToastNotification/Stack';
 
 class App {
   target: Element;
@@ -18,9 +19,9 @@ class App {
 
   mount = () => {
     this.render();
-    const mainDOM = $('main');
-    if (!mainDOM) return;
-    const notificationSetter = new NotificationSetter(mainDOM);
+    const stack = new Stack();
+    const notificationSetter = new Setter(NOTIFICATIONS);
+    stack.init();
     notificationSetter.init();
   };
 }

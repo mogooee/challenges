@@ -31,7 +31,7 @@ main{
   background-color: var(--main-bg-color);
 }
 
-.notification-stack{
+.stack{
   position: absolute;
   max-height: 98vh;
   overflow-y: scroll;
@@ -39,11 +39,11 @@ main{
   scrollbar-width: none; 
 }
 
-.notification-stack::-webkit-scrollbar{
+.stack::-webkit-scrollbar{
   display: none;
 }
 
-.toast-notification{
+.notification{
   display:flex; 
   align-items: center;
   border-radius: 8px;
@@ -52,7 +52,7 @@ main{
   transition: all 0.5s ease-out;
 }
 
-.toast-notification:hover{
+.notification:hover{
   animation: bounce 1.5s linear 0s infinite;
 }
 
@@ -65,167 +65,167 @@ main{
 	100% {margin-left: 0px;}
 }
 
-.toast-notification span{
+.notification span{
   color: var(--text-color)
 }
 
-.toast-notification > svg:first-child{
+.notification > svg:first-child{
   margin-right: 32px;
 }
 
-.notification-cancel{
+.cancel-btn{
   margin-left: auto;
 }
 
-.notify-info{
+.notification.info{
   box-shadow: inset 0 -4px var(--information-color);
 }
 
-.notify-success{
+.notification.success{
   box-shadow: inset 0 -4px var(--success-color);
 }
 
-.notify-warning{
+.notification.warning{
   box-shadow: inset 0 -4px var(--warning-color);
 }
 
-.notify-error{
+.notification.error{
   box-shadow: inset 0 -4px var(--error-color);
 }
 
-.notification-setter{
+.setter{
   display: grid;
   place-items: center;
   background-color: var(--notification-bg-color);
   border-radius: 8px; 
 }
 
-.notification-setter button{
+.setter button{
   width: 100%;
   border-radius: 8px;
   font-weight: bolder;
   color: var(--notification-bg-color);
 }
 
-.notification-setter > .info{
+.setter > .info{
   background-color: var(--information-color);
 }
 
-.notification-setter > .success{
+.setter > .success{
   background-color: var(--success-color);
 }
 
-.notification-setter > .warning{
+.setter > .warning{
   background-color: var(--warning-color);
 }
 
-.notification-setter > .error{
+.setter > .error{
   background-color: var(--error-color);
 }
 
 @media screen and (min-width: 1024px){
-  .toast-notification{
+  .notification{
     width: 439px;
     height: 76px;
     padding: 26px 16px;
     transform: translateX(-439px);
   }
 
-  .notification-stack{
+  .stack{
   top: 26px;
   left: 32px;
   }
 
-  .notification-stack > div + div{
+  .stack > div + div{
     margin-top: 16px;
   }
 
-  .toast-notification span{
+  .notification span{
     font-size: 20px;
   }
 
-  .notification-setter{
+  .setter{
     width: 512px;
     height: 505px;
     padding: 50px 36px;
   }
 
-  .notification-setter button{
+  .setter button{
     padding: 21px 162px;
     font-size: 28px;
   }
 }
 
 @media (min-width: 768px) and (max-width: 1023px){
-  .toast-notification{
+  .notification{
     width: 239px;
     padding: 18px 18px;
     transform: translateX(-239px);
   }
 
-  .toast-notification span{
+  .notification span{
     font-size: 16px;
   }
 
-  .notification-stack{
+  .stack{
     top: 12px;
     left: 18px;
   }
 
-  .notification-stack > div + div{
+  .stack > div + div{
     margin-top: 12px;
   }
 
-  .notification-setter{
+  .setter{
     width: 312px;
     height: 350px;
     padding: 40px 26px;
   }
 
-  .notification-setter button{
+  .setter button{
     padding: 16px 82px;
     font-size: 16px;
   }
 }
 
 @media (min-width: 320px) and (max-width: 767px){
-  .toast-notification{
+  .notification{
     width: 139px;
     flex-wrap:wrap; 
     padding: 10px 10px;
     transform: translateX(-139px);
   }
 
-  .toast-notification span{
+  .notification span{
     font-size: 12px;
   }
 
-  .toast-notification > svg:first-child{
+  .notification > svg:first-child{
     margin-bottom: 10px;
   }
 
-  .notification-cancel{
+  .cancel-btn{
     position: absolute;
     right: 10px;
     top: 12px;
   }
 
-  .notification-stack > div + div{
+  .stack > div + div{
     margin-top: 8px;
   }
 
-  .notification-stack{
+  .stack{
     top: 6px;
     left: 12px;
   }
 
-  .notification-setter{
+  .setter{
     width: 151px;
     height: 160px;
     padding: 10px 8px;
   }
 
-  .notification-setter button{
+  .setter button{
     padding: 8px 42px;
     font-size: 12px;
   }
