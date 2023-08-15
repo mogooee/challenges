@@ -1,10 +1,5 @@
 import { $ } from '@/utils';
-import { ANIMATION_DELAY, Notifications } from '@/constants';
-
-export type AddNotification = (
-  { type, message }: Notifications,
-  autoTimer: number,
-) => void;
+import { ANIMATION_DELAY } from '@/constants';
 
 class Stack {
   target: Element | null;
