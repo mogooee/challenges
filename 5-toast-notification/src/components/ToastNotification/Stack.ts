@@ -2,11 +2,7 @@ import { $ } from '@/utils';
 import { ANIMATION_DELAY } from '@/constants';
 
 class Stack {
-  target: Element | null;
-
-  constructor() {
-    this.target = null;
-  }
+  target: Element | null = null;
 
   init = () => {
     Stack.render();

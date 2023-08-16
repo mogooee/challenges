@@ -3,16 +3,14 @@ import { AUTO_TIMER, Notifications, NotificationType } from '@/constants';
 import Notification from '@/components/ToastNotification/Notification';
 
 class Setter {
-  target: Element | null;
+  target: Element | null = null;
 
   notifications: Notifications[];
 
-  autoTimer: number;
+  autoTimer: number = AUTO_TIMER;
 
   constructor(notificationTypes: Notifications[]) {
     this.notifications = notificationTypes;
-    this.autoTimer = AUTO_TIMER;
-    this.target = null;
   }
 
   init = () => {

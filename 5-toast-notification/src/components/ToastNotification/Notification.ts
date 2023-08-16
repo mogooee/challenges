@@ -15,22 +15,18 @@ class Notification {
 
   autoTimer: number;
 
-  progressValue: number;
+  progressValue: number = PROGRESS.INIT_VALUE;
 
-  target: HTMLDivElement | null;
+  target: HTMLDivElement | null = null;
 
-  progressDOM: HTMLProgressElement | null;
+  progressDOM: HTMLProgressElement | null = null;
 
-  timer: Timer;
+  timer: Timer = { progressBar: null, animation: null, remover: null };
 
   constructor(type: NotificationType, message: string, autoTimer: number) {
     this.type = type;
     this.message = message;
     this.autoTimer = autoTimer;
-    this.progressValue = PROGRESS.INIT_VALUE;
-    this.target = null;
-    this.progressDOM = null;
-    this.timer = { progressBar: null, animation: null, remover: null };
   }
 
   init = () => {
@@ -77,7 +73,7 @@ class Notification {
       this.timer.animation = setTimeout(() => {
         this.progressDOM!.value = PROGRESS.INIT_VALUE;
         clearInterval(this.timer.progressBar!);
-        this.target?.classList.toggle('on');
+        this.target?.classList.remove('on');
       }, autoTime);
       this.timer.remover = setTimeout(() => {
         this.target?.remove();
