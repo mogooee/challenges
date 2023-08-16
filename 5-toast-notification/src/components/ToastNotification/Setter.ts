@@ -25,7 +25,10 @@ class Setter {
   template = () => {
     return `<div class='setter'>
     ${this.notifications
-      .map(({ type }) => `<button class=${type}>${toPascalCase(type)}</button>`)
+      .map(
+        ({ type }) =>
+          `<button data-type=${type}>${toPascalCase(type)}</button>`,
+      )
       .join('')}
     </div>`;
   };
@@ -41,10 +44,13 @@ class Setter {
 
   setNotification = ({ target }: Event) => {
     if (!(target instanceof HTMLElement) || target.tagName !== 'BUTTON') return;
-    const type = target.className as NotificationType;
+    const { type } = target.dataset;
     const message = this.notifications.find((e) => e.type === type)?.message;
-    if (!message) return;
-    const notification = new Notification(type, message, this.autoTimer);
+    const notification = new Notification(
+      type as NotificationType,
+      message!,
+      this.autoTimer,
+    );
     notification.init();
   };
 }

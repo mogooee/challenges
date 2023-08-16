@@ -42,7 +42,7 @@ class Notification {
   };
 
   template = () => {
-    return `<div class='notification ${this.type}'>
+    return `<div class='notification' data-type=${this.type}>
               ${icon[this.type]}
               <span>${this.message}</span>
               <button class='cancel-btn'>${icon.cancel}</button>
