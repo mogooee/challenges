@@ -1,9 +1,9 @@
-import ColorPicker from './ColorPicker';
+import PostItMaker from './PostItMaker';
 
 const App = () => {
   return (
     <div className="App">
-      <ColorPicker />
+      <PostItMaker />
     </div>
   );
 };

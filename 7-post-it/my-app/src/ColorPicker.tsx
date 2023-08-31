@@ -14,6 +14,8 @@ const COLORS = [
 ];
 
 const StyledColorPicker = styled.details`
+  position: relative;
+
   div,
   li {
     width: 14px;
@@ -22,6 +24,19 @@ const StyledColorPicker = styled.details`
     border-radius: 3px;
     list-style: none;
     cursor: pointer;
+  }
+
+  &[open] > summary::before {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    display: block;
+    cursor: default;
+    content: ' ';
+    background: transparent;
   }
 `;
 
@@ -38,6 +53,10 @@ const ColorList = styled.menu`
   margin: 10px 0;
   border: 1px solid black;
   border-radius: 4px;
+  position: absolute;
+  top: 10px;
+  z-index: 101;
+  background-color: white;
 `;
 
 const ColorPicker = () => {
