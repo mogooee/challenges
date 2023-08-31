@@ -1,17 +1,6 @@
-import { useState } from 'react';
+import React from 'react';
 import { styled } from 'styled-components';
-const DEFAULT_COLOR = '#91C8E4';
-const COLORS = [
-  '#FFCCCC',
-  '#F97B22',
-  '#FEFF86',
-  '#DBC4F0',
-  '#DDFFBB',
-  '#91C8E4',
-  '#D4E2D4',
-  '#ACFADF',
-  '#9E9FA5',
-];
+import { COLORS } from './constants';
 
 const StyledColorPicker = styled.details`
   position: relative;
@@ -59,9 +48,12 @@ const ColorList = styled.menu`
   background-color: white;
 `;
 
-const ColorPicker = () => {
-  const [color, setColor] = useState(DEFAULT_COLOR);
+interface ColorPickerProps {
+  color: string;
+  setColor: React.Dispatch<React.SetStateAction<string>>;
+}
 
+const ColorPicker = ({ color, setColor }: ColorPickerProps) => {
   const handleColorClick = ({ target }: { target: EventTarget }) => {
     const selectedColor = (target as HTMLLIElement).dataset.color;
     setColor(selectedColor!);
