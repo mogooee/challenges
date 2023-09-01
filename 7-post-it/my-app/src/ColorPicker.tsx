@@ -55,7 +55,7 @@ interface ColorPickerProps {
 
 const ColorPicker = ({ color, setColor }: ColorPickerProps) => {
   const handleColorClick = ({ target }: { target: EventTarget }) => {
-    const selectedColor = (target as HTMLLIElement).dataset.color;
+    const selectedColor = (target as HTMLLIElement).style.backgroundColor;
     setColor(selectedColor!);
   };
 
@@ -69,7 +69,6 @@ const ColorPicker = ({ color, setColor }: ColorPickerProps) => {
           <li
             key={e}
             style={{ backgroundColor: e }}
-            data-color={e}
             onClick={handleColorClick}
           ></li>
         ))}
