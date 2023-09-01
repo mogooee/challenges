@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import ColorPicker from './ColorPicker';
-import { DEFAULT_COLOR } from './constants';
+import { DEFAULT_COLOR, SIZE } from './constants';
 import { PostItProps } from './PostIt';
+import { random } from './utils';
 
 const StyledPostItMaker = styled.div`
   border: 1px solid black;
@@ -35,12 +36,23 @@ interface PostItMakerProps {
 const PostItMaker = ({ setPostIts }: PostItMakerProps) => {
   const [color, setColor] = useState<string>(DEFAULT_COLOR);
 
+  const getPostItPosition = () => {
+    const memoBoard = document.querySelector('.memo-board') as Element;
+    const x = random(
+      SIZE.MEMOBOARD.PADDING,
+      memoBoard?.clientWidth - SIZE.POSTIT.WIDTH - SIZE.MEMOBOARD.PADDING,
+    );
+    const y = random(
+      SIZE.MEMOBOARD.PADDING,
+      memoBoard?.clientHeight - SIZE.POSTIT.HEIGHT - SIZE.MEMOBOARD.PADDING,
+    );
+    return { x, y };
+  };
+
   const handleCreateButtonClick = () => {
-    const createdAt = new Date().getTime();
-    const x = Math.floor(Math.random() * (window.innerWidth - 250 + 1));
-    const y = Math.floor(Math.random() * (window.innerHeight - 300 + 1));
-    const $position = { x, y };
-    const newPost = { color, $position, createdAt };
+    const createdAt = Date.now();
+    const $position = getPostItPosition();
+    const newPost: PostItProps = { color, createdAt, $position };
     setPostIts((prev) => [...prev, newPost]);
   };
 

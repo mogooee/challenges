@@ -10,3 +10,9 @@ export const COLORS = [
   '#ACFADF',
   '#9E9FA5',
 ];
+
+export const SIZE = {
+  MEMOBOARD: {
+    PADDING: 10,
+  },
+};
