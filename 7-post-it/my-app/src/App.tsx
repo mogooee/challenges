@@ -25,9 +25,26 @@ const MemoBoard = styled.div`
   position: relative;
 `;
 
+export const getHighestIndex = (postIts: PostItProps[]): number => {
+  const highestIndex = Math.max(...postIts.map((e) => e.index));
+  return highestIndex + 1;
+};
+
 const App = () => {
   const [postIts, setPostIts] = useState<PostItProps[]>([]);
-  const { dragStart, drag, dragOver, drop } = useDragAndDrop();
+
+  const changeZIndex = (index: number) => {
+    setPostIts((prev) => {
+      return prev.map((e) => {
+        if (e.index === index) {
+          return { ...e, index: getHighestIndex(prev) };
+        }
+        return e;
+      });
+    });
+  };
+
+  const { dragStart, drag, dragOver, drop } = useDragAndDrop(changeZIndex);
 
   return (
     <LayOut>
@@ -40,9 +57,10 @@ const App = () => {
           onDragOver={dragOver}
           onDrop={drop}
         >
-          {postIts.map(({ color, $position, createdAt }) => (
+          {postIts.map(({ index, color, $position, createdAt }) => (
             <PostIt
               key={createdAt}
+              index={index}
               color={color}
               $position={$position}
               createdAt={createdAt}

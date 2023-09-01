@@ -1,31 +1,31 @@
-import styled, { css } from 'styled-components';
-import { DEFAULT_COLOR } from './constants';
 import { useState } from 'react';
+import styled, { css } from 'styled-components';
+import { DEFAULT_COLOR, SIZE } from './constants';
+import { Position } from './hooks/useDragAndDrop';
 
-interface PostItPosition {
-  x: number;
-  y: number;
-}
 export interface PostItProps {
   color?: string;
-  $position: PostItPosition;
+  $position: Position;
   createdAt: number;
+  index: number;
 }
 
-type TStyledPostIt = Pick<PostItProps, '$position'>;
+type TStyledPostIt = Pick<PostItProps, '$position'> & { $zIndex: number };
 
 const StyledPostIt = styled.textarea<TStyledPostIt>`
-  width: 180px;
-  height: 180px;
+  width: ${SIZE.POSTIT.WIDTH}px;
+  height: ${SIZE.POSTIT.HEIGHT}px;
   padding: 8px;
   border: none;
   font-family: monospace;
   resize: none;
   position: absolute;
+  cursor: grab;
 
-  ${({ $position }) => css`
-    top: ${$position.y}px;
+  ${({ $position, $zIndex }) => css`
     left: ${$position.x}px;
+    top: ${$position.y}px;
+    z-index: ${$zIndex};
   `}
 
   &:focus {
@@ -33,25 +33,24 @@ const StyledPostIt = styled.textarea<TStyledPostIt>`
   }
 `;
 
-const PostIt = ({
-  color = DEFAULT_COLOR,
-  $position,
-  createdAt,
-}: PostItProps) => {
+const PostIt = ({ index, color = DEFAULT_COLOR, $position }: PostItProps) => {
   const [content, setContent] = useState<string>('');
   const PLACE_HOLDER = '내용을 입력해주세요.';
 
-  const handleTextareaChange = ({ target }: { target: EventTarget }) => {
+  const handlePostItChange = ({ target }: { target: EventTarget }) => {
     setContent((target as HTMLTextAreaElement).value);
   };
 
   return (
     <StyledPostIt
       style={{ backgroundColor: color }}
-      placeholder={PLACE_HOLDER}
-      onChange={handleTextareaChange}
       $position={$position}
+      $zIndex={index}
+      placeholder={PLACE_HOLDER}
       value={content}
+      onChange={handlePostItChange}
+      data-index={index}
+      draggable
     ></StyledPostIt>
   );
 };

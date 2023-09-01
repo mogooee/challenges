@@ -4,6 +4,7 @@ import ColorPicker from './ColorPicker';
 import { DEFAULT_COLOR, SIZE } from './constants';
 import { PostItProps } from './PostIt';
 import { random } from './utils';
+import { getHighestIndex } from './App';
 
 const StyledPostItMaker = styled.div`
   border: 1px solid black;
@@ -52,8 +53,11 @@ const PostItMaker = ({ setPostIts }: PostItMakerProps) => {
   const handleCreateButtonClick = () => {
     const createdAt = Date.now();
     const $position = getPostItPosition();
-    const newPost: PostItProps = { color, createdAt, $position };
-    setPostIts((prev) => [...prev, newPost]);
+    const newPost = { color, createdAt, $position };
+    setPostIts((prev) => {
+      const index = prev.length ? getHighestIndex(prev) : 0;
+      return [...prev, { ...newPost, index }];
+    });
   };
 
   return (
