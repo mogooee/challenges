@@ -12,6 +12,10 @@ export const COLORS = [
 ];
 
 export const SIZE = {
+  POSTIT: {
+    WIDTH: 180,
+    HEIGHT: 180,
+  },
   MEMOBOARD: {
     PADDING: 10,
   },

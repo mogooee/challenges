@@ -2,6 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import PostItMaker from './PostItMaker';
 import PostIt, { PostItProps } from './PostIt';
+import useDragAndDrop from './hooks/useDragAndDrop';
 
 const LayOut = styled.div`
   * {
@@ -17,8 +18,6 @@ const LayOut = styled.div`
 `;
 
 const MemoBoard = styled.div`
-  border: 1px solid black;
-  height: calc(100vh - 100px);
   margin-top: 10px;
   border-radius: 16px;
   height: inherit;
@@ -28,6 +27,7 @@ const MemoBoard = styled.div`
 
 const App = () => {
   const [postIts, setPostIts] = useState<PostItProps[]>([]);
+  const { dragStart, drag, dragOver, drop } = useDragAndDrop();
 
   return (
     <LayOut>
@@ -35,6 +35,10 @@ const App = () => {
         <PostItMaker setPostIts={setPostIts} />
         <MemoBoard
           className="memo-board"
+          onDragStart={dragStart}
+          onDrag={drag}
+          onDragOver={dragOver}
+          onDrop={drop}
         >
           {postIts.map(({ color, $position, createdAt }) => (
             <PostIt
