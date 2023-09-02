@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import PostItMaker from './PostItMaker';
-import PostIt, { PostItProps } from './PostIt';
+import PostItMaker from './components/PostItMaker';
+import PostIt, { PostItProps } from './components/PostIt';
 import useDragAndDrop, { Position } from './hooks/useDragAndDrop';
 
 const LayOut = styled.div`

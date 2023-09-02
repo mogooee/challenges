@@ -1,7 +1,6 @@
-import { useState } from 'react';
 import styled, { css } from 'styled-components';
-import { DEFAULT_COLOR, MESSAGE, SIZE } from './constants';
-import { Position } from './hooks/useDragAndDrop';
+import { DEFAULT_COLOR, MESSAGE, SIZE } from '../constants';
+import { Position } from '../hooks/useDragAndDrop';
 
 export interface PostItProps {
   index: number;

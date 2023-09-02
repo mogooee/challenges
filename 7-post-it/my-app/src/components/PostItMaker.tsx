@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import ColorPicker from './ColorPicker';
-import { DEFAULT_COLOR, MESSAGE, SIZE } from './constants';
+import { DEFAULT_COLOR, MESSAGE, SIZE } from '../constants';
 import { PostItProps } from './PostIt';
-import { random } from './utils';
-import { getHighestIndex } from './App';
+import { random } from '../utils';
+import { getHighestIndex } from '../App';
 
 const StyledPostItMaker = styled.div`
   border: 1px solid black;
