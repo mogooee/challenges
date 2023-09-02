@@ -1,57 +1,95 @@
 import { useState } from 'react';
 import styled, { css } from 'styled-components';
-import { DEFAULT_COLOR, SIZE } from './constants';
+import { DEFAULT_COLOR, MESSAGE, SIZE } from './constants';
 import { Position } from './hooks/useDragAndDrop';
 
 export interface PostItProps {
   color?: string;
+  index: number;
   $position: Position;
   createdAt: number;
-  index: number;
+  deletePostIt?: (index: number) => void;
 }
+type TLayOut = Pick<PostItProps, '$position'> & { $zIndex: number };
 
-type TStyledPostIt = Pick<PostItProps, '$position'> & { $zIndex: number };
-
-const StyledPostIt = styled.textarea<TStyledPostIt>`
+const LayOut = styled.div<TLayOut>`
+  display: flex;
+  flex-direction: column;
   width: ${SIZE.POSTIT.WIDTH}px;
   height: ${SIZE.POSTIT.HEIGHT}px;
-  padding: 8px;
-  border: none;
-  font-family: monospace;
-  resize: none;
   position: absolute;
-  cursor: grab;
 
   ${({ $position, $zIndex }) => css`
     left: ${$position.x}px;
     top: ${$position.y}px;
     z-index: ${$zIndex};
   `}
+`;
+
+const StyledPostIt = styled.textarea`
+  width: inherit;
+  height: 100%;
+  padding: 8px;
+  border: none;
+  font-family: monospace;
+  resize: none;
+  cursor: grab;
 
   &:focus {
     outline: none;
   }
 `;
 
-const PostIt = ({ index, color = DEFAULT_COLOR, $position }: PostItProps) => {
+const ControlBox = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  border-bottom: 1px dashed darkgrey;
+  padding: 4px;
+
+  button {
+    color: mediumvioletred;
+  }
+`;
+
+const PostIt = ({
+  index,
+  color = DEFAULT_COLOR,
+  $position,
+  createdAt,
+  deletePostIt,
+}: PostItProps) => {
   const [content, setContent] = useState<string>('');
-  const PLACE_HOLDER = '내용을 입력해주세요.';
+  const PLACE_HOLDER = MESSAGE.POSTIT.PLACEHOLDER;
+
+  const handleDeleteButtonClick = (index: number) => {
+    const result = confirm(MESSAGE.POSTIT.DELETE);
+    if (!result) return;
+    deletePostIt?.(index);
+  };
 
   const handlePostItChange = ({ target }: { target: EventTarget }) => {
     setContent((target as HTMLTextAreaElement).value);
   };
 
   return (
-    <StyledPostIt
-      style={{ backgroundColor: color }}
+    <LayOut
+      className="post-it"
       $position={$position}
       $zIndex={index}
-      placeholder={PLACE_HOLDER}
-      value={content}
-      onChange={handlePostItChange}
       data-index={index}
       draggable
-    ></StyledPostIt>
+    >
+      <ControlBox style={{ backgroundColor: color }}>
+        <button onClick={() => handleDeleteButtonClick(index)}>{'X'}</button>
+      </ControlBox>
+      <StyledPostIt
+        style={{ backgroundColor: color }}
+        placeholder={PLACE_HOLDER}
+        value={content}
+        onChange={handlePostItChange}
+      />
+    </LayOut>
   );
 };
 

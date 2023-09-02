@@ -14,9 +14,19 @@ export const COLORS = [
 export const SIZE = {
   POSTIT: {
     WIDTH: 180,
-    HEIGHT: 180,
+    HEIGHT: 210,
   },
   MEMOBOARD: {
     PADDING: 10,
+  },
+};
+
+export const MESSAGE = {
+  POSTIT: {
+    PLACEHOLDER: '내용을 입력해주세요.',
+    DELETE: '정말 삭제하시겠습니까?',
+  },
+  POSTIT_MAKER: {
+    TITLE: `Let's Post it!`,
   },
 };

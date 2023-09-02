@@ -55,7 +55,7 @@ const getRangePosition = (memoBoardSize: MemoBoardSize): RangePosition => {
 
 const INIT_POS = { x: 0, y: 0 };
 
-const useDragAndDrop = (changeZIndex: ChangeZIndex) => {
+const useDragAndDrop = () => {
   const [originPos, setOriginPos] = useState<Position>(INIT_POS);
 
   const dragStart = ({ target, dataTransfer }: DragStart) => {
@@ -65,7 +65,6 @@ const useDragAndDrop = (changeZIndex: ChangeZIndex) => {
 
     const element = target as HTMLElement;
     setOriginPos({ x: element.offsetLeft, y: element.offsetTop });
-    changeZIndex(Number(element.dataset.index));
   };
 
   const drag = ({ target, currentTarget, pageX, pageY }: Drag) => {

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import ColorPicker from './ColorPicker';
-import { DEFAULT_COLOR, SIZE } from './constants';
+import { DEFAULT_COLOR, MESSAGE, SIZE } from './constants';
 import { PostItProps } from './PostIt';
 import { random } from './utils';
 import { getHighestIndex } from './App';
@@ -25,7 +25,6 @@ const StyledPostItMaker = styled.div`
     button {
       border: 1px solid black;
       background-color: white;
-      cursor: pointer;
     }
   }
 `;
@@ -62,7 +61,7 @@ const PostItMaker = ({ setPostIts }: PostItMakerProps) => {
 
   return (
     <StyledPostItMaker>
-      <p>{`Let's Post it!`}</p>
+      <p>{MESSAGE.POSTIT_MAKER.TITLE}</p>
       <div className="control-box">
         <ColorPicker color={color} setColor={setColor} />
         <button type="button" onClick={handleCreateButtonClick}>

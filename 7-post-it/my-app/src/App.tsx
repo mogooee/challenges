@@ -9,6 +9,12 @@ const LayOut = styled.div`
     box-sizing: border-box;
   }
 
+  button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+  }
+
   .App {
     display: flex;
     flex-direction: column;
@@ -32,6 +38,11 @@ export const getHighestIndex = (postIts: PostItProps[]): number => {
 
 const App = () => {
   const [postIts, setPostIts] = useState<PostItProps[]>([]);
+  const { dragStart, drag, dragOver, drop } = useDragAndDrop();
+
+  const deletePostIt = (index: number) => {
+    setPostIts((prev) => prev.filter((e) => e.index !== index));
+  };
 
   const changeZIndex = (index: number) => {
     setPostIts((prev) => {
@@ -44,7 +55,12 @@ const App = () => {
     });
   };
 
-  const { dragStart, drag, dragOver, drop } = useDragAndDrop(changeZIndex);
+  const handlePostItMouseDown = ({ target }: { target: EventTarget }) => {
+    const element = target as HTMLElement;
+    const postIt = element.closest('.post-it') as HTMLDivElement;
+    if (!postIt) return;
+    changeZIndex(Number(postIt.dataset.index));
+  };
 
   return (
     <LayOut>
@@ -56,6 +72,7 @@ const App = () => {
           onDrag={drag}
           onDragOver={dragOver}
           onDrop={drop}
+          onMouseDown={handlePostItMouseDown}
         >
           {postIts.map(({ index, color, $position, createdAt }) => (
             <PostIt
@@ -64,6 +81,7 @@ const App = () => {
               color={color}
               $position={$position}
               createdAt={createdAt}
+              deletePostIt={deletePostIt}
             />
           ))}
         </MemoBoard>
