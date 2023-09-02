@@ -18,6 +18,7 @@ const LayOut = styled.div<TLayOut>`
   width: ${SIZE.POSTIT.WIDTH}px;
   height: ${SIZE.POSTIT.HEIGHT}px;
   position: absolute;
+  cursor: grab;
 
   ${({ $position, $zIndex }) => css`
     left: ${$position.x}px;
@@ -33,7 +34,6 @@ const StyledPostIt = styled.textarea`
   border: none;
   font-family: monospace;
   resize: none;
-  cursor: grab;
 
   &:focus {
     outline: none;

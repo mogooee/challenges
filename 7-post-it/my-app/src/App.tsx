@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import PostItMaker from './PostItMaker';
 import PostIt, { PostItProps } from './PostIt';
-import useDragAndDrop from './hooks/useDragAndDrop';
+import useDragAndDrop, { Position } from './hooks/useDragAndDrop';
 
 const LayOut = styled.div`
   * {
@@ -38,28 +38,44 @@ export const getHighestIndex = (postIts: PostItProps[]): number => {
 
 const App = () => {
   const [postIts, setPostIts] = useState<PostItProps[]>([]);
-  const { dragStart, drag, dragOver, drop } = useDragAndDrop();
 
-  const deletePostIt = (index: number) => {
-    setPostIts((prev) => prev.filter((e) => e.index !== index));
-  };
-
-  const changeZIndex = (index: number) => {
-    setPostIts((prev) => {
-      return prev.map((e) => {
+  const setZIndex = (index: number) => {
+    setPostIts((prev) =>
+      prev.map((e) => {
         if (e.index === index) {
           return { ...e, index: getHighestIndex(prev) };
         }
         return e;
-      });
-    });
+      }),
+    );
   };
 
   const handlePostItMouseDown = ({ target }: { target: EventTarget }) => {
     const element = target as HTMLElement;
     const postIt = element.closest('.post-it') as HTMLDivElement;
     if (!postIt) return;
-    changeZIndex(Number(postIt.dataset.index));
+    setZIndex(Number(postIt.dataset.index));
+  };
+
+  const setNewPos = (target: HTMLElement, deltaPos: Position) => {
+    const index = Number(target.dataset.index);
+    setPostIts((prev) => {
+      return prev.map((e) => {
+        if (e.index === index) {
+          const x = e.$position.x + deltaPos.x;
+          const y = e.$position.y + deltaPos.y;
+          return { ...e, $position: { x, y } };
+        }
+        return e;
+      });
+    });
+  };
+
+  const { dragStart, drag, dragOver, dragLeave, drop, dragEnd } =
+    useDragAndDrop(setNewPos);
+
+  const deletePostIt = (index: number) => {
+    setPostIts((prev) => prev.filter((e) => e.index !== index));
   };
 
   return (
@@ -68,11 +84,13 @@ const App = () => {
         <PostItMaker setPostIts={setPostIts} />
         <MemoBoard
           className="memo-board"
+          onMouseDown={handlePostItMouseDown}
           onDragStart={dragStart}
           onDrag={drag}
           onDragOver={dragOver}
+          onDragLeave={dragLeave}
           onDrop={drop}
-          onMouseDown={handlePostItMouseDown}
+          onDragEnd={dragEnd}
         >
           {postIts.map(({ index, color, $position, createdAt }) => (
             <PostIt

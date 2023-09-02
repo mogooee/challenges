@@ -5,104 +5,119 @@ export interface Position {
   x: number;
   y: number;
 }
-interface MemoBoardSize {
-  width: number;
-  height: number;
+interface Range {
+  min: number;
+  max: number;
 }
 interface RangePosition {
-  rangeX: {
-    min: number;
-    max: number;
-  };
-  rangeY: {
-    min: number;
-    max: number;
-  };
+  x: Range;
+  y: Range;
 }
-type DragStart = Pick<React.DragEvent<HTMLElement>, 'target' | 'dataTransfer'>;
-type Drag = Pick<
+type DragStart = Pick<
   React.DragEvent<HTMLElement>,
-  'target' | 'currentTarget' | 'pageX' | 'pageY'
+  'target' | 'currentTarget' | 'dataTransfer' | 'screenX' | 'screenY'
 >;
-type ChangeZIndex = (index: number) => void;
+type Drag = Pick<DragStart, 'screenX' | 'screenY'>;
 
-const getRelativePosition = (
-  parentElement: HTMLElement,
-  childElement: HTMLElement,
-  pageX: number,
-  pageY: number,
-) => {
-  const { top, left } = parentElement.getBoundingClientRect();
-  const x = pageX - left - childElement.clientWidth / 2;
-  const y = pageY - top - childElement.clientHeight / 2;
-  return { x, y };
-};
-
-const inRangePosition = (pos: number, min: number, max: number) => {
+const inRange = (pos: number, min: number, max: number): number => {
   if (pos < min) return min;
   if (pos > max) return max;
   return pos;
 };
 
-const getRangePosition = (memoBoardSize: MemoBoardSize): RangePosition => {
-  const maxX = memoBoardSize.width - SIZE.POSTIT.WIDTH - SIZE.MEMOBOARD.PADDING;
-  const maxY =
-    memoBoardSize.height - SIZE.POSTIT.HEIGHT - SIZE.MEMOBOARD.PADDING;
-  const rangeX = { min: SIZE.MEMOBOARD.PADDING, max: maxX };
-  const rangeY = { min: SIZE.MEMOBOARD.PADDING, max: maxY };
-  return { rangeX, rangeY };
+const getBaordRange = (boardElement: HTMLElement): RangePosition => {
+  const { top, left, right, bottom } = boardElement.getBoundingClientRect();
+  const x = {
+    min: left + SIZE.MEMOBOARD.PADDING,
+    max: right - SIZE.MEMOBOARD.PADDING,
+  };
+  const y = { min: top + SIZE.MEMOBOARD.PADDING, max: bottom - 10 };
+  return { x, y };
+};
+
+const getTargetRange = (
+  targetElement: HTMLElement,
+  boardRange: RangePosition,
+) => {
+  const { top, left } = targetElement.getBoundingClientRect();
+  const x = {
+    min: boardRange.x.min - left,
+    max: boardRange.x.max - left - SIZE.POSTIT.WIDTH,
+  };
+  const y = {
+    min: boardRange.y.min - top,
+    max: boardRange.y.max - top - SIZE.POSTIT.HEIGHT,
+  };
+  return { x, y };
 };
 
 const INIT_POS = { x: 0, y: 0 };
+const INIT_RANGE = {
+  x: { min: 0, max: 0 },
+  y: { min: 0, max: 0 },
+};
 
-const useDragAndDrop = () => {
+const useDragAndDrop = (
+  setNewPos: (target: HTMLElement, deltaPos: Position) => void,
+) => {
+  const [targetElement, setTargetElement] = useState<HTMLElement>();
   const [originPos, setOriginPos] = useState<Position>(INIT_POS);
+  const [moveRange, setMoveRange] = useState<RangePosition>(INIT_RANGE);
+  const [deltaPos, setDeltaPos] = useState<Position>(INIT_POS);
 
-  const dragStart = ({ target, dataTransfer }: DragStart) => {
+  const dragStart = ({
+    target,
+    currentTarget,
+    dataTransfer,
+    screenX,
+    screenY,
+  }: DragStart) => {
     dataTransfer.effectAllowed = 'move';
     const img = new Image();
     dataTransfer.setDragImage(img, 0, 0);
-
-    const element = target as HTMLElement;
-    setOriginPos({ x: element.offsetLeft, y: element.offsetTop });
+    setOriginPos({ x: screenX, y: screenY });
+    const boardRange = getBaordRange(currentTarget);
+    const { x, y } = getTargetRange(target as HTMLElement, boardRange);
+    setMoveRange({ x, y });
+    setTargetElement(target as HTMLElement);
   };
 
-  const drag = ({ target, currentTarget, pageX, pageY }: Drag) => {
-    if (!pageX && !pageY) return;
-    const element = target as HTMLElement;
-    element.style.cursor = 'grabbing';
-    const position = getRelativePosition(currentTarget, element, pageX, pageY);
-    const [dx, dy] = [position.x - originPos.x, position.y - originPos.y];
-    const memoBoard = document.querySelector('.memo-board') as Element;
-    const memoBoardSize = {
-      width: memoBoard.clientWidth,
-      height: memoBoard.clientHeight,
-    };
-    const { rangeX, rangeY } = getRangePosition(memoBoardSize);
-    const movedX = inRangePosition(
-      dx,
-      rangeX.min - originPos.x,
-      rangeX.max - originPos.x,
-    );
-    const movedY = inRangePosition(
-      dy,
-      rangeY.min - originPos.y,
-      rangeY.max - originPos.y,
-    );
-    element.style.transform = `translateX(${movedX}px) translateY(${movedY}px)`;
+  const drag = ({ screenX, screenY }: Drag) => {
+    if (!screenX && !screenY) return;
+    const [dx, dy] = [screenX - originPos.x, screenY - originPos.y];
+    const movingX = inRange(dx, moveRange.x.min, moveRange.x.max);
+    const movingY = inRange(dy, moveRange.y.min, moveRange.y.max);
+    targetElement!.style.transform = `translateX(${movingX}px) translateY(${movingY}px)`;
+    targetElement!.style.cursor = 'grabbing';
   };
 
   const dragOver = (e: React.DragEvent) => {
-    e.stopPropagation();
     e.preventDefault();
   };
 
-  const drop = ({ target }: Drag) => {
-    const element = target as HTMLElement;
-    element.style.cursor = 'grab';
+  const dragLeave = () => {
+    setDeltaPos(INIT_POS);
   };
 
-  return { dragStart, drag, dragOver, drop };
+  const drop = () => {
+    const numRegex = /[^-?0-9]/g;
+    const transform = targetElement?.style.transform;
+    if (!transform) return;
+    const [translateX, translateY] = transform.split(' ');
+    const deltaPos = {
+      x: Number(translateX.replace(numRegex, '')),
+      y: Number(translateY.replace(numRegex, '')),
+    };
+    setDeltaPos(deltaPos);
+  };
+
+  const dragEnd = () => {
+    setNewPos(targetElement!, deltaPos);
+    targetElement!.style.cursor = 'grab';
+    targetElement!.style.transform = '';
+  };
+
+  return { dragStart, drag, dragOver, dragLeave, drop, dragEnd };
 };
 
 export default useDragAndDrop;
