@@ -52,7 +52,7 @@ const PostItMaker = ({ setPostIts }: PostItMakerProps) => {
   const handleCreateButtonClick = () => {
     const createdAt = Date.now();
     const $position = getPostItPosition();
-    const newPost = { color, createdAt, $position };
+    const newPost = { color, createdAt, $position, content: '' };
     setPostIts((prev) => {
       const index = prev.length ? getHighestIndex(prev) : 0;
       return [...prev, { ...newPost, index }];

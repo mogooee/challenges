@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import PostItMaker from './PostItMaker';
 import PostIt, { PostItProps } from './PostIt';
@@ -36,8 +36,19 @@ export const getHighestIndex = (postIts: PostItProps[]): number => {
   return highestIndex + 1;
 };
 
+const getInitPostIts = () => {
+  const localStorage = window.localStorage.getItem('post-it');
+  const initPostIts: PostItProps[] = JSON.parse(localStorage!);
+  return initPostIts;
+};
+
+const setLocalStorage = (postIts: PostItProps[]) => {
+  window.localStorage.setItem('post-it', JSON.stringify(postIts, null, 2));
+};
+
 const App = () => {
-  const [postIts, setPostIts] = useState<PostItProps[]>([]);
+  const initPostIts = getInitPostIts();
+  const [postIts, setPostIts] = useState<PostItProps[]>(initPostIts);
 
   const setZIndex = (index: number) => {
     setPostIts((prev) =>
@@ -78,6 +89,21 @@ const App = () => {
     setPostIts((prev) => prev.filter((e) => e.index !== index));
   };
 
+  const setPostItContent = (index: number, content: string) => {
+    setPostIts((prev) =>
+      prev.map((e) => {
+        if (e.index === index) {
+          return { ...e, content };
+        }
+        return e;
+      }),
+    );
+  };
+
+  useEffect(() => {
+    setLocalStorage(postIts);
+  }, [postIts]);
+
   return (
     <LayOut>
       <div className="App">
@@ -92,13 +118,15 @@ const App = () => {
           onDrop={drop}
           onDragEnd={dragEnd}
         >
-          {postIts.map(({ index, color, $position, createdAt }) => (
+          {postIts.map(({ index, color, $position, content, createdAt }) => (
             <PostIt
               key={createdAt}
               index={index}
               color={color}
               $position={$position}
+              content={content}
               createdAt={createdAt}
+              setPostItContent={setPostItContent}
               deletePostIt={deletePostIt}
             />
           ))}

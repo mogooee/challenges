@@ -4,11 +4,13 @@ import { DEFAULT_COLOR, MESSAGE, SIZE } from './constants';
 import { Position } from './hooks/useDragAndDrop';
 
 export interface PostItProps {
-  color?: string;
   index: number;
-  $position: Position;
+  content: string;
   createdAt: number;
+  color?: string;
+  $position: Position;
   deletePostIt?: (index: number) => void;
+  setPostItContent?: (index: number, content: string) => void;
 }
 type TLayOut = Pick<PostItProps, '$position'> & { $zIndex: number };
 
@@ -56,10 +58,11 @@ const PostIt = ({
   index,
   color = DEFAULT_COLOR,
   $position,
+  content,
   createdAt,
   deletePostIt,
+  setPostItContent,
 }: PostItProps) => {
-  const [content, setContent] = useState<string>('');
   const PLACE_HOLDER = MESSAGE.POSTIT.PLACEHOLDER;
 
   const handleDeleteButtonClick = (index: number) => {
@@ -68,8 +71,12 @@ const PostIt = ({
     deletePostIt?.(index);
   };
 
-  const handlePostItChange = ({ target }: { target: EventTarget }) => {
-    setContent((target as HTMLTextAreaElement).value);
+  const handlePostItChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>,
+    index: number,
+  ) => {
+    const newContent = (event.target as HTMLTextAreaElement).value;
+    setPostItContent?.(index, newContent);
   };
 
   return (
@@ -87,7 +94,9 @@ const PostIt = ({
         style={{ backgroundColor: color }}
         placeholder={PLACE_HOLDER}
         value={content}
-        onChange={handlePostItChange}
+        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+          handlePostItChange(e, index)
+        }
       />
     </LayOut>
   );
