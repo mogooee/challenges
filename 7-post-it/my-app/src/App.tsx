@@ -48,7 +48,7 @@ const setLocalStorage = (postIts: PostItProps[]) => {
 
 const App = () => {
   const initPostIts = getInitPostIts();
-  const [postIts, setPostIts] = useState<PostItProps[]>(initPostIts);
+  const [postIts, setPostIts] = useState<PostItProps[]>(initPostIts || []);
 
   const setZIndex = (index: number) => {
     setPostIts((prev) =>
