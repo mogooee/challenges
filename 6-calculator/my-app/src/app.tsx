@@ -7,7 +7,7 @@ const LayOut = styled.div`
   place-items: center;
 `;
 
-const App = () => (
+const App = ():React.ReactElement => (
   <div id="App">
     <LayOut>
       <Calculator />
