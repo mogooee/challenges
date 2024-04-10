@@ -1,0 +1,68 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: math;
+  --main-bg-color: aliceblue;
+  --star-on-color: #fcba03;
+  --star-off-color: lightgray;
+  --star-width : 5rem;
+  --star-height: 5rem;
+}
+
+button {
+  border: 0;
+}
+  
+main {
+  height: 100vh;
+  display: grid;
+  place-items: center;
+  background-color: var(--main-bg-color);
+}
+
+.rating {
+  width: min-content;
+  display: grid; 
+  place-items: center;
+  background-color: white;
+  border-radius: 1rem;
+  box-shadow: 1rem 0.5rem 0.5rem lightblue;
+  padding: 3rem;
+}
+
+.rating > h1 {
+  text-align: center;
+  font-size: 1.7rem;
+}
+
+.stars {
+  display: flex;
+  gap: 1rem;
+  margin: 3rem 0;
+}
+
+.star {
+  width: var(--star-width);
+  height: var(--star-height);
+  background-color: var(--star-off-color);
+  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  cursor: pointer;
+}
+
+.half::before {
+ content: '';
+ display: block; 
+ width: calc(var(--star-width) / 2);
+ height: var(--star-height); 
+ background-color: var(--star-on-color);
+} 
+
+.on {
+  background-color: var(--star-on-color);
+}
+
+.rating-msg {
+  text-align: center;
+  font-size: 1rem;
+}
