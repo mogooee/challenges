@@ -1,4 +1,4 @@
-const STUDENTS = ["Alex", "Tom", "Ryan", "Don", "Emma"];
+const STUDENTS = ['Alex', 'Tom', 'Ryan', 'Don', 'Emma'];
 
 const SIZE = {
   CANVAS: {
@@ -24,7 +24,7 @@ const SIZE = {
   },
 };
 
-const COLORS = ["#4287f5", "#f55442", "#f5c842", "#b0f542", "#8142f5", "#f54284"];
+const COLORS = ['#4287f5', '#f55442', '#f5c842', '#b0f542', '#8142f5', '#f54284'];
 
 const SCORE = {
   MIN: 0,

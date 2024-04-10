@@ -8,12 +8,12 @@ const LayOut = styled.div`
   place-items: center;
 `;
 
-function App() {
+const App = () => {
   return (
     <LayOut>
       <Routers />
     </LayOut>
   );
-}
+};
 
 export default App;

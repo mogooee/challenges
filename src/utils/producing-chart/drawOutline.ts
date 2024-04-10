@@ -1,4 +1,4 @@
-import { SIZE } from "../../constants/producing-chart";
+import { SIZE } from '../../constants/producing-chart';
 
 const drawOutline = (canvas: CanvasRenderingContext2D) => {
   canvas.beginPath();

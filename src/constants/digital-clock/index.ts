@@ -1,4 +1,3 @@
-
 const TIMER = {
   INIT: 0,
   SEC: 1,

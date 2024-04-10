@@ -39,7 +39,7 @@ const getDragAfterElement = (container: { children: HTMLCollection }, x: number)
       }
       return closest;
     },
-    { offset: Number.NEGATIVE_INFINITY, element: null }
+    { offset: Number.NEGATIVE_INFINITY, element: null },
   ).element;
 };
 
@@ -51,8 +51,8 @@ export const dragOverImage = ({ currentTarget: container, clientX, preventDefaul
   preventDefault();
 };
 
-export const dropImage: DropImage = ({ target, dataTransfer }) => {
-  const dragIdx = Number(dataTransfer.getData('text/plain'));
-  const dropIdx = Math.floor(((target as HTMLDivElement).offsetLeft / sliderWidth) * showNum);
-  return { dragIdx, dropIdx };
-};
+// export const dropImage: DropImage = ({ target, dataTransfer }) => {
+//   const dragIdx = Number(dataTransfer.getData('text/plain'));
+//   const dropIdx = Math.floor(((target as HTMLDivElement).offsetLeft / sliderWidth) * showNum);
+//   return { dragIdx, dropIdx };
+// };

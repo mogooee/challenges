@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { MSG, RATING } from '../../constants/star-rating';
 import { $ } from '../../utils/star-rating';
-import Star from './Star.js';
+import Star from './Star';
 
 class Rating {
   constructor(number) {

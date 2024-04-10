@@ -50,20 +50,25 @@ const useDragAndDrop = () => {
     const { clientX, currentTarget: container } = event;
     if (!container) return;
 
-    const { element: afterElement, index: dropIdx } = getDragAfterElement(container, clientX);
-    setDropIdx(dropIdx);
-    const draggable = document.querySelector('.dragging');
+    const dragAfterElement = getDragAfterElement(container, clientX);
 
-    if (draggable) {
-      (container as HTMLElement).insertBefore(draggable, afterElement);
-      event.preventDefault();
-    }
+    // if (!dragAfterElement?.element || !dragAfterElement?.index) return;
+
+    // const { element: afterElement, index: dropIdx } = dragAfterElement;
+
+    // setDropIdx(dropIdx);
+    // const draggable = document.querySelector('.dragging');
+
+    // if (draggable) {
+    //   (container as HTMLElement).insertBefore(draggable, afterElement);
+    //   event.preventDefault();
+    // }
   };
 
   const dropImage = ({ dataTransfer }: { dataTransfer: DataTransfer }) => {
     const dragIdx = Number(dataTransfer.getData('text/plain'));
-    setRootIdx(dragIdx);
-    switchFile(dragIdx, dropIdx);
+    // setRootIdx(dragIdx);
+    // switchFile(dragIdx, dropIdx);
   };
 
   return { dragStartImage, dragEndImage, dragOverImage, dropImage };
