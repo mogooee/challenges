@@ -19,7 +19,7 @@
   "bugs": {
     "url": "https://github.com/mogooee/challenges/issues"
   },
-  "homepage": "https://github.com/mogooee/challenges#readme",
+  "homepage": "https://github.com/challenges",
   "dependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
