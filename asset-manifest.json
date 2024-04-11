@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/challenges/static/css/main.59dff2af.css",
-    "main.js": "/challenges/static/js/main.393e9671.js",
+    "main.js": "/challenges/static/js/main.b3161bfa.js",
     "static/media/info-circle.svg": "/challenges/static/media/info-circle.23d2264a114d7e8be0d828daf9969189.svg",
     "static/media/times-circle.svg": "/challenges/static/media/times-circle.9c01cc910ee384b0cde2b26b84393066.svg",
     "static/media/exclamation-triangle.svg": "/challenges/static/media/exclamation-triangle.6102c25aff310c12cf61f586997aa208.svg",
@@ -9,10 +9,10 @@
     "static/media/cancel.svg": "/challenges/static/media/cancel.681ba9d50a875aeed6aaf96910da39e1.svg",
     "index.html": "/challenges/index.html",
     "main.59dff2af.css.map": "/challenges/static/css/main.59dff2af.css.map",
-    "main.393e9671.js.map": "/challenges/static/js/main.393e9671.js.map"
+    "main.b3161bfa.js.map": "/challenges/static/js/main.b3161bfa.js.map"
   },
   "entrypoints": [
     "static/css/main.59dff2af.css",
-    "static/js/main.393e9671.js"
+    "static/js/main.b3161bfa.js"
   ]
 }
