@@ -5,7 +5,7 @@ import { getTens, getUnits } from '../../utils/digital-clock/calcUnit';
 
 const useTimer = () => {
   const [timer, setTimer] = useState<number>(0);
-  let timerId = useRef<ReturnType<typeof setInterval> | null>(null);
+  const timerId = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const startTimer = () => {
     if (timerId.current) return;

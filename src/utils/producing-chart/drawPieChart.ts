@@ -11,8 +11,8 @@ const drawPieChart = (
   const sum = ratios.reduce((acc, cur) => acc + cur, 0);
 
   let startAngle = 0;
-  let labelX = 0,
-    labelY = SIZE.CANVAS.HEIGHT - SIZE.PIE_CHART.OFFSET_LABEL_Y;
+  let labelX = 0;
+  const labelY = SIZE.CANVAS.HEIGHT - SIZE.PIE_CHART.OFFSET_LABEL_Y;
   const labelWidth = SIZE.CANVAS.WIDTH / labels.length;
 
   const drawPie = (index: number, startAngle: number, endAngle: number, color: string) => {

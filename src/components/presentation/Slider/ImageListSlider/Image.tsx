@@ -23,13 +23,7 @@ const StyledImage = styled.img<TStyledImage>`
 `;
 
 const Image = ({ type = 'ROOT', file, width, height }: ImageProps) => (
-  <StyledImage
-    type={type}
-    src={URL.createObjectURL(file)}
-    alt={file.name}
-    width={width}
-    height={height}
-  />
+  <StyledImage type={type} src={URL.createObjectURL(file)} alt={file.name} width={width} height={height} />
 );
 
 export default Image;
