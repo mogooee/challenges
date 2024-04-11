@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "target": "es2016",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "module": "esnext",
+    "baseUrl": ".",
+     "paths": {
+        "@/*": ["src/*"]
+    },
+    "allowJs": true,
+    "checkJs": true,
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "strict": true,
+    "isolatedModules": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": false,
+    "removeComments": true,
+    "skipLibCheck": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "noEmit": true,
+    "noEmitOnError": true,
+    "noUnusedLocals": false,
+    "sourceMap": true,
+  },
+  "include": ["src", "src/custom.d.ts"],
+  "exclude": ["node_modules", "**/*.js"],
+}
