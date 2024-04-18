@@ -1,6 +1,13 @@
 import { $ } from '../../utils/notification';
-import * as icon from '../../assets/toast-notification/icons';
 import { ANIMATION_DELAY, NotificationType, PROGRESS, Timer, TimerMode } from '../../constants/notification';
+
+const iconMap = {
+  cancel: 'cancel',
+  success: 'check-circle',
+  info: 'info-circle',
+  warning: 'exclamation-triangle',
+  error: 'times-circle',
+};
 
 class Notification {
   type: NotificationType;
@@ -37,10 +44,10 @@ class Notification {
 
   template = () => {
     return `<div class='notification' data-type=${this.type}>
-              <img src=${icon[this.type]}/>
+              <img src='${process.env.PUBLIC_URL}/assets/toast-notification/${iconMap[this.type]}.svg'/>
               <span>${this.message}</span>
               <button class='cancel-btn'>
-                <img src=${icon.cancel} />
+                <img src='${process.env.PUBLIC_URL}/assets/toast-notification/cancel.svg' />
               </button>
               <progress value="${PROGRESS.MAX_VALUE}"
                max="${PROGRESS.MAX_VALUE}"></progress>

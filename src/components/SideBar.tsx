@@ -5,10 +5,10 @@ const CHALLENGE = [
   'producing-chart',
   'digital-clock',
   'star-rating',
-  //   'presentation',
   'toast-notification',
-  'calculator',
   'post-it',
+  // 'presentation',
+  // 'calculator',
 ];
 
 const SideBar = () => {

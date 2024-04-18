@@ -1,12 +1,12 @@
 import { Navigate, BrowserRouter, Route, Routes, Outlet } from 'react-router-dom';
+import SideBar from '../components/SideBar';
 import ProducingChart from '../pages/ProducingChart';
 import DigitalClock from '../pages/DigitalClock';
 import StarRating from '../pages/StarRating';
-import Presentation from '../pages/Presentation';
 import Notification from '../pages/Notification';
-import Calculator from '../pages/Calculator';
 import PostIt from '../pages/PostIt';
-import SideBar from '../components/SideBar';
+import Presentation from '../pages/Presentation';
+import Calculator from '../pages/Calculator';
 
 const Dashboard = () => {
   return (
@@ -26,12 +26,12 @@ const Routers = (): React.ReactElement => {
           <Route path="producing-chart" element={<ProducingChart />} />
           <Route path="digital-clock" element={<DigitalClock />} />
           <Route path="star-rating" element={<StarRating />} />
-          {/* <Route path="presentation" element={<Presentation />} /> */}
           <Route path="toast-notification" element={<Notification />} />
-          <Route path="calculator" element={<Calculator />} />
+          {/* <Route path="presentation" element={<Presentation />} /> */}
+          {/* <Route path="calculator" element={<Calculator />} /> */}
           <Route path="post-it" element={<PostIt />} />
-          {/* <Route path="*" element={<Navigate to="/" />} /> */}
         </Route>
+        <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </BrowserRouter>
   );
